@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Slades</string>
+
+    <!-- Bottom Navigation Bar -->
+    <string name="navBar_title_vehicles">Οχήματα</string>
+    <string name="navBar_title_authorities">Συντήρηση</string>
+</resources>
