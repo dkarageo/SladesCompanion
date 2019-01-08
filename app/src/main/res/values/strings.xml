@@ -5,4 +5,6 @@
     <string name="navBar_title_vehicles">Vehicles</string>
     <string name="navBar_title_authorities">Authorities</string>
 
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
