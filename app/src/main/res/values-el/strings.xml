@@ -5,4 +5,8 @@
     <!-- Bottom Navigation Bar -->
     <string name="navBar_title_vehicles">Οχήματα</string>
     <string name="navBar_title_authorities">Συντήρηση</string>
+
+    <!-- Authorities Tabs Titles -->
+    <string name="authorities_tab_roadsideunits_title">Αισθητήρες</string>
+    <string name="authorities_tab_obstacles_title">Εμπόδια</string>
 </resources>

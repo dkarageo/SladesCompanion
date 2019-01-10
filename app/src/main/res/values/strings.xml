@@ -5,6 +5,10 @@
     <string name="navBar_title_vehicles">Vehicles</string>
     <string name="navBar_title_authorities">Authorities</string>
 
+    <!-- Authorities Tabs Titles -->
+    <string name="authorities_tab_roadsideunits_title">Roadside Units</string>
+    <string name="authorities_tab_obstacles_title">Obstacles</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
