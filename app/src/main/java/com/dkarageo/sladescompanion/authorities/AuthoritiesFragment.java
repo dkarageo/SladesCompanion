@@ -2,6 +2,7 @@ package com.dkarageo.sladescompanion.authorities;
 
 
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -41,6 +42,8 @@ public class AuthoritiesFragment extends Fragment {
         mViewPager = getActivity().findViewById(R.id.authorities_viewpager);
         mViewPager.setAdapter(mPagerAdapter);
 
+        TabLayout tabLayout = getActivity().findViewById(R.id.authorities_viewpager_tablayout);
+        tabLayout.setupWithViewPager(mViewPager);
     }
 
     public class AuthoritiesPagerAdapter extends FragmentPagerAdapter {
