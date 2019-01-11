@@ -9,6 +9,13 @@
     <string name="authorities_tab_roadsideunits_title">Roadside Units</string>
     <string name="authorities_tab_obstacles_title">Obstacles</string>
 
+    <!-- Roadside Units Fragment Strings -->
+    <string name="roadside_units_items_type_hint">Sensor Type</string>
+    <string name="roadside_units_items_operator_hint">Operator:</string>
+    <string name="roadside_units_items_last_service_hint">Last Service:</string>
+    <string name="roadside_units_items_id_hint">Id</string>
+    <string name="roadside_units_items_manufacturer_hint">Manufacturer:</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

@@ -3,12 +3,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".authorities.RoadsideUnitsPage">
+    tools:context=".authorities.RoadsideUnitsPage"
+    android:paddingBottom="8dp"
+    android:paddingTop="8dp"
+    android:paddingLeft="8dp"
+    android:paddingRight="8dp">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/roadside_units_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="This is roadside units page" />
+        android:scrollbars="vertical"/>
 
 </FrameLayout>
