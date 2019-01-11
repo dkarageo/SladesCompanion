@@ -6,6 +6,10 @@
     <string name="navBar_title_vehicles">Οχήματα</string>
     <string name="navBar_title_authorities">Συντήρηση</string>
 
+    <!-- Vehicles Tabs Titles -->
+    <string name="vehicles_tab_summary_title">Σύνοψη</string>
+    <string name="vehicles_tab_vehicle_detail_title">Όχημα</string>
+
     <!-- Authorities Tabs Titles -->
     <string name="authorities_tab_roadsideunits_title">Αισθητήρες</string>
     <string name="authorities_tab_obstacles_title">Εμπόδια</string>

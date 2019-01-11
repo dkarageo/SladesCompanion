@@ -1,13 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".vehicles.VehiclesFragment">
 
-    <TextView
+    <android.support.v4.view.ViewPager
+        android:id="@+id/vehicles_viewpager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="This is vehicles fragment." />
+        android:layout_height="match_parent">
 
+        <android.support.design.widget.TabLayout
+            android:id="@+id/vehicles_viewpager_tablayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:background="@color/colorPrimary"
+            app:tabBackground="@color/colorPrimary"
+            app:tabTextColor="@color/white"
+            app:tabIndicatorColor="@color/colorAccent"
+            app:tabMaxWidth="500dp"
+            app:tabGravity="center"
+            app:tabMode="scrollable" />
+    </android.support.v4.view.ViewPager>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/vehicles_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/vehicles_fab_icon"
+        android:layout_gravity="end|bottom"
+        android:layout_margin="24dp" />
 </FrameLayout>
