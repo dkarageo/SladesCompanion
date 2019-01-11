@@ -2,6 +2,7 @@ package com.dkarageo.sladescompanion.db;
 
 import android.util.Log;
 
+import com.dkarageo.sladescompanion.authorities.Obstacle;
 import com.dkarageo.sladescompanion.authorities.RoadsideUnit;
 
 import java.sql.Connection;
@@ -100,6 +101,50 @@ public class MaintainerDBProxy {
         }
 
         return units;
+    }
+
+    public List<Obstacle> getObstacles(boolean filterByRequiringService) {
+
+        ArrayList<Obstacle> obstacles = new ArrayList<>();
+
+        if (mConn == null) {
+            try {
+                mConn = openConnection();
+            } catch (SQLException ex) {
+                Log.e(TAG_SQL_ERROR, Log.getStackTraceString(ex));
+            } finally {
+                // When no connection to db, return an empty list.
+                if (mConn == null) return obstacles;
+            }
+        }
+
+        Statement s = null;
+        String where = "WHERE requiresService = 1";
+        String query = String.format("SELECT * FROM %s.obstacle %s;", DBNAME,
+                                     filterByRequiringService ? where : "");
+
+        try {
+            s = mConn.createStatement();
+            ResultSet rs = s.executeQuery(query);
+
+            while (rs.next()) {
+                Obstacle o = new Obstacle(rs.getLong("obstacleId"));
+
+                o.setObstacleType(rs.getString("type"));
+                o.setFirstlySpottedOn(rs.getDate("firstlySpottedOn"));
+                o.setLastlySpottedOn(rs.getDate("lastlySpottedOn"));
+                o.setIsAliveConfidence(rs.getFloat("isAliveConfidence"));
+                o.setRequiresService(rs.getBoolean("requiresService"));
+
+                obstacles.add(o);
+            }
+
+            s.close();
+        } catch (SQLException ex) {
+            Log.e(TAG_SQL_ERROR, Log.getStackTraceString(ex));
+        }
+
+        return obstacles;
     }
 
 //    private List<RoadsideUnit> testingRUs() {

@@ -9,4 +9,10 @@
     <!-- Authorities Tabs Titles -->
     <string name="authorities_tab_roadsideunits_title">Αισθητήρες</string>
     <string name="authorities_tab_obstacles_title">Εμπόδια</string>
+
+    <!-- Obstacles Fragment Strings -->
+    <string name="obstacles_items_type_hint">Τύπος Εμποδίου</string>
+    <string name="obstacles_items_id_hint">Id Εμποδίου</string>
+    <string name="obstacles_items_firstly_spotted_date_hint">Εντοπίστηκε αρχικά:</string>
+    <string name="obstacles_items_lastly_spotted_date_hint">Εντοπίστηκε τελευταία:</string>
 </resources>

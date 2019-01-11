@@ -1,0 +1,78 @@
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="8dp">
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/obstacles_item_card"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardBackgroundColor="@color/white">
+
+        <GridLayout
+            android:id="@+id/obstacles_item_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:columnCount="2"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp">
+
+            <TextView
+                android:id="@+id/obstacles_item_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:hint="@string/obstacles_items_type_hint"
+                android:layout_columnSpan="2"
+                android:layout_marginBottom="4dp" />
+
+            <TextView
+                android:id="@+id/obstacles_item_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                android:hint="@string/obstacles_items_id_hint"
+                android:layout_columnSpan="2"
+                android:layout_marginBottom="4dp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/colorPrimaryDark"
+                android:layout_columnSpan="2"
+                android:layout_marginBottom="8dp" />
+
+            <TextView
+                android:id="@+id/obstacles_item_firstly_spotted_date_hint"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="@string/obstacles_items_firstly_spotted_date_hint"
+                android:layout_marginEnd="8dp" />
+
+            <TextView
+                android:id="@+id/obstacles_item_firstly_spotted_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/obstacles_items_firstly_spotted_date_hint" />
+
+            <TextView
+                android:id="@+id/obstacles_item_lastly_spotted_date_hint"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="@string/obstacles_items_lastly_spotted_date_hint"
+                android:layout_marginEnd="8dp" />
+
+            <TextView
+                android:id="@+id/obstacles_item_lastly_spotted_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="@string/obstacles_items_lastly_spotted_date_hint" />
+
+        </GridLayout>
+    </android.support.v7.widget.CardView>
+</FrameLayout>
