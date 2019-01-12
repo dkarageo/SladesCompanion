@@ -6,6 +6,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,13 +18,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class VehiclesFragment extends Fragment {
+public class VehiclesFragment extends Fragment
+        implements VehicleDetailPage.OnVehicleDetailPageDestroyListener {
 
     VehiclesPagerAdapter mPagerAdapter;
     ViewPager mViewPager;
 
-    List<VehicleDetailPage> vehicleFrags = new ArrayList<>();
-    VehiclesSummaryPage summaryFrag;
+    List<VehicleDetailPage> mVehicleFrags = new ArrayList<>();
+    VehiclesSummaryPage mSummaryFrag;
+    int mCreatedVehiclesCount = 0;  // Count how many vehicles have been totally created.
 
 
     public VehiclesFragment() {
@@ -37,7 +40,7 @@ public class VehiclesFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_vehicles, container, false);
 
         if (savedInstanceState == null) {
-            summaryFrag = new VehiclesSummaryPage();
+            mSummaryFrag = new VehiclesSummaryPage();
         }
 
         // Setup view pager.
@@ -53,19 +56,26 @@ public class VehiclesFragment extends Fragment {
         return rootView;
     }
 
+    @Override
+    public void onPageDestroy(VehicleDetailPage detailPage) {
+        removeVehicleDetailPage(detailPage);
+    }
+
     public class VehiclesPagerAdapter extends FragmentPagerAdapter {
+
+//        private long baseId = 0;
 
         public VehiclesPagerAdapter(FragmentManager fm) { super(fm); }
 
         @Override
         public Fragment getItem(int position) {
-            if (position == 0) return summaryFrag;  // First fragment is always the summary one.
-            else return vehicleFrags.get(position - 1);
+            if (position == 0) return mSummaryFrag;  // First fragment is always the summary one.
+            else return mVehicleFrags.get(position - 1);
         }
 
         @Override
         public int getCount() {
-            return vehicleFrags.size() + 1;  // Also count the summary fragment.
+            return mVehicleFrags.size() + 1;  // Also count the summary fragment.
         }
 
         @Override
@@ -73,22 +83,69 @@ public class VehiclesFragment extends Fragment {
             String title;
 
             if (position == 0) title = getString(R.string.vehicles_tab_summary_title);
-            else {
-                title = getString(R.string.vehicles_tab_vehicle_detail_title) + " " +
-                        Integer.toString(position);
-            }
+            else title = mVehicleFrags.get(position-1).getTitle();
 
             return title;
         }
+
+        @Override
+        public long getItemId(int position) {
+            if (position == 0) return 0;
+            else return ((VehicleDetailPage) getItem(position)).getPageIndicator();
+        }
+
+        @Override
+        public int getItemPosition(Object object) { return PagerAdapter.POSITION_NONE; }
+
+//        /**
+//         * Notify that the position of a fragment has been changed.
+//         * Create a new ID for each position to force recreation of the fragment
+//         * @param n number of items which have been changed
+//         */
+//        public void notifyChangeInPosition(int n) {
+//            // shift the ID returned by getItemId outside the range of all previous fragments
+//            baseId += getCount() + 1;
+//        }
     }
 
     class FABOnClickListener implements View.OnClickListener {
         @Override
         public void onClick(View view) {
             // When FAB is clicked, create a new vehicle screen.
-            vehicleFrags.add(new VehicleDetailPage());
+            ++mCreatedVehiclesCount;
+            VehicleDetailPage vehicleDetail = new VehicleDetailPage();
+            vehicleDetail.setPageIndicator(mCreatedVehiclesCount);
+
+            // Pass the counter for that vehicle.
+            Bundle bundle = new Bundle();
+            bundle.putInt(VehicleDetailPage.COUNT_TAG, mCreatedVehiclesCount);
+
+            vehicleDetail.setArguments(bundle);
+
+            addVehicleDetailPage(vehicleDetail);
+        }
+    }
+
+    private void addVehicleDetailPage(VehicleDetailPage vehicleDetail) {
+        mVehicleFrags.add(vehicleDetail);
+        mPagerAdapter.notifyDataSetChanged();
+        mViewPager.setCurrentItem(mVehicleFrags.size());
+    }
+
+    private void removeVehicleDetailPage(VehicleDetailPage vehicleDetail) {
+        int pos = -1;
+        for (int i = 0; i < mVehicleFrags.size(); ++i) {
+            if (mVehicleFrags.get(i).getArguments().getInt(VehicleDetailPage.COUNT_TAG) ==
+                vehicleDetail.getArguments().getInt(VehicleDetailPage.COUNT_TAG)) {
+                pos = i;
+                break;
+            }
+        }
+
+        if (pos > -1) {
+            mVehicleFrags.remove(pos);
+//            mPagerAdapter.notifyChangeInPosition(1);
             mPagerAdapter.notifyDataSetChanged();
-            mViewPager.setCurrentItem(vehicleFrags.size());
         }
     }
 }

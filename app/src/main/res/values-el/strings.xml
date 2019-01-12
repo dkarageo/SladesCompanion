@@ -10,6 +10,19 @@
     <string name="vehicles_tab_summary_title">Σύνοψη</string>
     <string name="vehicles_tab_vehicle_detail_title">Όχημα</string>
 
+    <!-- Vehicle Detail String -->
+    <string name="vehicles_vehicle_title_hint">Τίτλοσ</string>
+    <string name="vehicles_vehicle_title_prefix">Όχημα</string>
+    <string name="vehicles_vehicle_image_description">Εικόνα Οχήματος</string>
+    <string name="vehicles_vehicle_operation_switch_stopped_text">Εναρξη</string>
+    <string name="vehicles_vehicle_operation_switch_started_text">Ληξη</string>
+    <string name="vehicles_vehicle_licenseNo_hint">Αριθμός Αδείας:</string>
+    <string name="vehicles_vehicle_manufacturer_hint">Κατασκευαστής:</string>
+    <string name="vehicles_vehicle_model_hint">Μοντέλο:</string>
+    <string name="vehicles_vehicle_autodrivingsys_name_hint">Σύστημα Αυτόνομης Οδήγησης:</string>
+    <string name="vehicles_vehicle_autodrivingsys_version_hint">Έκδοση Συσ. Αυτόνομης Οδήγησης:</string>
+    <string name="vehicles_vehicle_autonomylevel_hint">Επίπεδο Αυτονομίας:</string>
+
     <!-- Authorities Tabs Titles -->
     <string name="authorities_tab_roadsideunits_title">Αισθητήρες</string>
     <string name="authorities_tab_obstacles_title">Εμπόδια</string>

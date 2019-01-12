@@ -9,6 +9,19 @@
     <string name="vehicles_tab_summary_title">Summary</string>
     <string name="vehicles_tab_vehicle_detail_title">Vehicle</string>
 
+    <!-- Vehicle Detail String -->
+    <string name="vehicles_vehicle_title_hint">Title</string>
+    <string name="vehicles_vehicle_title_prefix">Vehicle</string>
+    <string name="vehicles_vehicle_image_description">ClipArt of Vehicle</string>
+    <string name="vehicles_vehicle_operation_switch_stopped_text">Start</string>
+    <string name="vehicles_vehicle_operation_switch_started_text">Stop</string>
+    <string name="vehicles_vehicle_licenseNo_hint">License No:</string>
+    <string name="vehicles_vehicle_manufacturer_hint">Manufacturer:</string>
+    <string name="vehicles_vehicle_model_hint">Model:</string>
+    <string name="vehicles_vehicle_autodrivingsys_name_hint">Auto-Driving Sys:</string>
+    <string name="vehicles_vehicle_autodrivingsys_version_hint">Auto-Driving Sys Version:</string>
+    <string name="vehicles_vehicle_autonomylevel_hint">Autonomy Level:</string>
+
     <!-- Authorities Tabs Titles -->
     <string name="authorities_tab_roadsideunits_title">Roadside Units</string>
     <string name="authorities_tab_obstacles_title">Obstacles</string>
