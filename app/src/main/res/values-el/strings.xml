@@ -22,6 +22,10 @@
     <string name="vehicles_vehicle_autodrivingsys_name_hint">Σύστημα Αυτόνομης Οδήγησης:</string>
     <string name="vehicles_vehicle_autodrivingsys_version_hint">Έκδοση Συσ. Αυτόνομης Οδήγησης:</string>
     <string name="vehicles_vehicle_autonomylevel_hint">Επίπεδο Αυτονομίας:</string>
+    <string name="vehicles_vehicle_sim_stopped_hint">-- H Προσομοίωση δεν Εκτελείται --</string>
+    <string name="vehicles_vehicle_sim_latency_hint">Latency (ms):</string>
+    <string name="vehicles_vehicle_sim_update_interval_hint">Ρυθμός Ανανέωσης (ms):</string>
+    <string name="vehicles_vehicle_sim_update_latency_wait_hint">... παρακαλώ περιμένετε ...</string>
 
     <!-- Authorities Tabs Titles -->
     <string name="authorities_tab_roadsideunits_title">Αισθητήρες</string>

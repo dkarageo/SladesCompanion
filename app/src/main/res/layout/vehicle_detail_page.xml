@@ -163,5 +163,66 @@
                 android:hint="@string/vehicles_vehicle_autonomylevel_hint" />
 
         </android.support.v7.widget.GridLayout>
+
+        <View
+            android:id="@+id/vehicles_vehicle_body_siminfo_divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/colorPrimaryDark"
+            app:layout_constraintTop_toBottomOf="@id/vehicles_vehicle_parameters_table"
+            android:layout_marginTop="8dp" />
+
+        <TextView
+            android:id="@+id/vehicles_vehicle_sim_stopped_hint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/vehicles_vehicle_sim_stopped_hint"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@id/vehicles_vehicle_body_siminfo_divider"
+            android:layout_marginTop="16dp" />
+
+        <android.support.v7.widget.GridLayout
+            android:id="@+id/vehicles_vehicle_sim_parameters_table"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:columnCount="2"
+            app:layout_constraintTop_toBottomOf="@id/vehicles_vehicle_body_siminfo_divider"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginTop="8dp"
+            android:visibility="gone" >
+
+            <TextView
+                android:id="@+id/vehicles_vehicle_sim_latency_hint"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/vehicles_vehicle_sim_latency_hint"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="4dp"
+                android:textStyle="bold"
+                android:textColor="@color/red" />
+
+            <TextView
+                android:id="@+id/vehicles_vehicle_sim_latency"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:textColor="@color/red" />
+
+            <TextView
+                android:id="@+id/vehicles_vehicle_sim_update_interval_hint"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/vehicles_vehicle_sim_update_interval_hint"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="4dp" />
+
+            <TextView
+                android:id="@+id/vehicles_vehicle_sim_update_interval"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="@string/vehicles_vehicle_sim_update_interval_hint" />
+        </android.support.v7.widget.GridLayout>
+
     </android.support.constraint.ConstraintLayout>
 </ScrollView>
