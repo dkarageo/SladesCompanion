@@ -179,6 +179,46 @@ public class MaintainerDBProxy {
         return unitId;
     }
 
+    public boolean deleteUnit(long unitId) {
+        if (!isConnectionValid()) return false;
+
+        final String query = String.format("DELETE FROM %s.unit WHERE unitId=?;", DBNAME);
+
+        try {
+            PreparedStatement ps = mConn.prepareStatement(query);
+            ps.setLong(1, unitId);
+            ps.executeUpdate();
+            ps.close();
+        } catch (SQLException ex) {
+            Log.e(TAG_SQL_ERROR, Log.getStackTraceString(ex));
+        }
+
+        return true;
+    }
+
+    public boolean deleteVehicle(Vehicle v) {
+        if (!isConnectionValid()) return false;
+
+        final String query = String.format("DELETE FROM %s.vehicle WHERE vehicleId=?;", DBNAME);
+
+        long vehicleId = v.getVehicleId();
+        if (!deleteAllLocations(vehicleId)) return false;
+
+        try {
+            PreparedStatement ps = mConn.prepareStatement(query);
+            ps.setLong(1, vehicleId);
+            ps.executeUpdate();
+            ps.close();
+        } catch (SQLException ex) {
+            Log.e(TAG_SQL_ERROR, Log.getStackTraceString(ex));
+            return false;
+        }
+
+        if (!deleteUnit(vehicleId)) return false;
+
+        return true;
+    }
+
     public int putLocation(long unitId, Location location) {
         if (!isConnectionValid()) return -1;
 
@@ -211,6 +251,23 @@ public class MaintainerDBProxy {
         }
 
         return locationId;
+    }
+
+    public boolean deleteAllLocations(long unitId) {
+        if (!isConnectionValid()) return false;
+
+        final String query = String.format("DELETE FROM %s.location WHERE unitId=?;", DBNAME);
+
+        try {
+            PreparedStatement ps = mConn.prepareStatement(query);
+            ps.setLong(1, unitId);
+            ps.executeUpdate();
+            ps.close();
+        } catch (SQLException ex) {
+            Log.e(TAG_SQL_ERROR, Log.getStackTraceString(ex));
+        }
+
+        return true;
     }
 
     public long putVehicle(Vehicle v) {
