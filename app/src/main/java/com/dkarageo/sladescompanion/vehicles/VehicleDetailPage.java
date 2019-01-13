@@ -13,6 +13,8 @@ import android.widget.TextView;
 
 import com.dkarageo.sladescompanion.App;
 import com.dkarageo.sladescompanion.R;
+import com.dkarageo.sladescompanion.vehicles.simulator.Simulation;
+import com.dkarageo.sladescompanion.vehicles.simulator.SimulationsManager;
 
 
 public class VehicleDetailPage extends Fragment {
@@ -32,6 +34,8 @@ public class VehicleDetailPage extends Fragment {
     Button    mDestroyButton;
 
     Vehicle mVehicle;  // Vehicle associated with current fragment.
+
+    Simulation mSimulation;  // Simulation for current vehicle.
 
     int mPageIndicator;  // Indicator for that vehicle.
 
@@ -61,6 +65,7 @@ public class VehicleDetailPage extends Fragment {
         if (savedInstanceState == null) {
             // Generate a new random vehicle.
             mVehicle = VehicleGenerator.generateVehicle();
+            mSimulation = null;
         }
     }
 
@@ -81,7 +86,7 @@ public class VehicleDetailPage extends Fragment {
         mAutonomyLevel      = rootView.findViewById(R.id.vehicles_vehicle_autonomylevel);
         mDestroyButton      = rootView.findViewById(R.id.vehicles_vehicle_destroy_button);
 
-        // Set listener for operation swtich button.
+        // Set listener for operation switch button and fix its state.
         mOperationSwitch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -89,6 +94,7 @@ public class VehicleDetailPage extends Fragment {
                 else startSimulation();
             }
         });
+        if (mSimulation != null) setOperationSwitchState(mSimulation.isRunning());
 
         // Set listener for vehicle destroy button.
         mDestroyButton.setOnClickListener(new View.OnClickListener() {
@@ -129,25 +135,38 @@ public class VehicleDetailPage extends Fragment {
     }
 
     private void startSimulation() {
-        mOperationSwitch.setBackground(
-                getResources().getDrawable(
-                        R.drawable.vehicle_detail_operation_switch_bg_started));
-        mOperationSwitch.setTextColor(getResources().getColor(R.color.red));
-        mOperationSwitch.setText(
-                getString(R.string.vehicles_vehicle_operation_switch_started_text));
+        if (mSimulation == null) {
+            mSimulation =
+                    SimulationsManager.getSimulationsManager().createSimulation(mVehicle);
+        }
+        mSimulation.start();
         mIsRunning = true;
+        setOperationSwitchState(true);
     }
 
     private void stopSimulation() {
-        mOperationSwitch.setBackground(
-                getResources().getDrawable(
-                        R.drawable.vehicle_detail_operation_switch_bg_stopped));
-        mOperationSwitch.setTextColor(getResources().getColor(R.color.green));
-        mOperationSwitch.setText(
-                getString(R.string.vehicles_vehicle_operation_switch_stopped_text));
+        mSimulation.stop();
         mIsRunning = false;
+        setOperationSwitchState(false);
     }
 
+    private void setOperationSwitchState(boolean started) {
+        if (started) {
+            mOperationSwitch.setBackground(
+                    getResources().getDrawable(
+                            R.drawable.vehicle_detail_operation_switch_bg_started));
+            mOperationSwitch.setTextColor(getResources().getColor(R.color.red));
+            mOperationSwitch.setText(
+                    getString(R.string.vehicles_vehicle_operation_switch_started_text));
+        } else {
+            mOperationSwitch.setBackground(
+                    getResources().getDrawable(
+                            R.drawable.vehicle_detail_operation_switch_bg_stopped));
+            mOperationSwitch.setTextColor(getResources().getColor(R.color.green));
+            mOperationSwitch.setText(
+                    getString(R.string.vehicles_vehicle_operation_switch_stopped_text));
+        }
+    }
 
     public interface OnVehicleDetailPageDestroyListener {
         void onPageDestroy(VehicleDetailPage detailPage);
