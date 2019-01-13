@@ -4,9 +4,11 @@ import android.util.Log;
 
 import com.dkarageo.sladescompanion.authorities.Obstacle;
 import com.dkarageo.sladescompanion.authorities.RoadsideUnit;
+import com.dkarageo.sladescompanion.vehicles.Vehicle;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -145,6 +147,140 @@ public class MaintainerDBProxy {
         }
 
         return obstacles;
+    }
+
+    public long putUnit() {
+        if (!isConnectionValid()) return -1;
+
+        final String query = String.format("INSERT INTO %s.Unit (updateInterval, isStructured, isDynamic, providerConfidence, type) VALUES(?, ?, ?, ?, ?)", DBNAME);
+        long unitId = -1;
+
+        try {
+            PreparedStatement ps = mConn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+            ps.setLong(1, 1000);
+            ps.setBoolean(2, false);
+            ps.setBoolean(3, false);
+            ps.setFloat(4, 1.0f);
+            ps.setString(5, "Vehicle");
+            ps.executeUpdate();
+
+            ResultSet rs = ps.getGeneratedKeys();
+
+            if (rs.next()) unitId = rs.getLong(1);
+
+            ps.close();
+
+        } catch (SQLException ex) {
+            Log.e(TAG_SQL_ERROR, Log.getStackTraceString(ex));
+        }
+
+        return unitId;
+    }
+
+    public long putVehicle(Vehicle v) {
+        if (!isConnectionValid()) return -2;
+
+        final String query = String.format("INSERT INTO %s.Vehicle (vehicleId, licenseNo, manufacturer, model, engineSerialNo, lostTraction, autoDriveSysId) VALUES(?, ?, ?, ?, ?, ?, ?)", DBNAME);
+
+        // Acquire GUID corresponding to current vehicle unit.
+        long vehicleId = putUnit();
+        if (vehicleId < 0) return -2;
+
+        // Acquire auto driving system id to register vehicle with.
+        long autoDriveSysId = getAutoDrivingSystemId(v.getAutoDrivingSystemName(),
+                                                     v.getManufacturer(),
+                                                     v.getAutoDrivingSystemVersion());
+        if (autoDriveSysId == -1) {
+            autoDriveSysId = putAutoDrivingSystem(v.getAutoDrivingSystemName(),
+                                                  v.getManufacturer(),
+                                                  v.getAutoDrivingSystemVersion(),
+                                                  v.getAutonomyLevel());
+        }
+        if (autoDriveSysId < 0) return -2;
+
+        try {
+            PreparedStatement ps = mConn.prepareStatement(query);
+            ps.setLong(1, vehicleId);
+            ps.setString(2, v.getLicenseNo());
+            ps.setString(3, v.getManufacturer());
+            ps.setString(4, v.getModel());
+            ps.setString(5, v.getEngineSerialNo());
+            ps.setBoolean(6, v.lostTraction());
+            ps.setLong(7, autoDriveSysId);
+            ps.executeUpdate();
+            ps.close();
+        } catch (SQLException ex) {
+            Log.e(TAG_SQL_ERROR, Log.getStackTraceString(ex));
+        }
+
+        v.setVehicleId(vehicleId);
+
+        return vehicleId;
+    }
+
+    public long putAutoDrivingSystem(String name, String manufacturer,
+                                     int version, int autonomyLevel) {
+        if (!isConnectionValid()) return -1;
+
+        final String query = String.format("INSERT INTO %s.AutoDrivingSystem (manufacturer, version, autonomyLevel, name) VALUES(?, ?, ?, ?)", DBNAME);
+        long drivingSystemId = -1;
+
+        try {
+            PreparedStatement ps = mConn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+            ps.setString(1, manufacturer);
+            ps.setInt(2, version);
+            ps.setInt(3, autonomyLevel);
+            ps.setString(4, name);
+            ps.executeUpdate();
+
+            ResultSet rs = ps.getGeneratedKeys();
+
+            if (rs.next()) drivingSystemId = rs.getLong(1);
+
+            ps.close();
+        } catch (SQLException ex) {
+            Log.e(TAG_SQL_ERROR, Log.getStackTraceString(ex));
+        }
+
+        return drivingSystemId;
+    }
+
+    public long getAutoDrivingSystemId(String name, String manufacturer, int version) {
+        if (!isConnectionValid()) return -2;
+
+        final String query = String.format("SELECT drivingSystemId FROM %s.AutoDrivingSystem WHERE manufacturer = ? AND version = ? AND name = ?", DBNAME);
+        long drivingSystemId = -1;
+
+        try {
+            PreparedStatement ps = mConn.prepareStatement(query);
+            ps.setString(1, manufacturer);
+            ps.setInt(2, version);
+            ps.setString(3, name);
+
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) drivingSystemId = rs.getLong(1);
+
+            ps.close();
+        } catch (SQLException ex) {
+            Log.e(TAG_SQL_ERROR, Log.getStackTraceString(ex));
+            return -2;
+        }
+
+        return drivingSystemId;
+    }
+
+    private synchronized boolean isConnectionValid() {
+        if (mConn == null) {
+            try {
+                mConn = openConnection();
+            } catch(SQLException ex){
+                Log.e(TAG_SQL_ERROR,Log.getStackTraceString(ex));
+                return false;
+            }
+        }
+
+        return true;
     }
 
 //    private List<RoadsideUnit> testingRUs() {
