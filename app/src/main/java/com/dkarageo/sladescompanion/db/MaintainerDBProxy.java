@@ -14,6 +14,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -149,6 +150,57 @@ public class MaintainerDBProxy {
         }
 
         return obstacles;
+    }
+
+    public long putObstacle(Obstacle obstacle) {
+        if (!isConnectionValid()) return -2;
+
+        final String query = String.format("INSERT INTO %s.Obstacle (obstacleId, type, firstlySpottedOn, lastlySpottedOn, isAliveConfidence, requiresService) VALUES(?, ?, ?, ?, ?, ?)", DBNAME);
+
+        // Acquire GUID corresponding to current obstacle unit.
+        long obstacleId = putUnit();
+        if (obstacleId < 0) return -2;
+
+        try {
+            PreparedStatement ps = mConn.prepareStatement(query);
+            ps.setLong(1, obstacleId);
+            ps.setString(2, obstacle.getObstacleType());
+            ps.setTimestamp(3, new Timestamp(obstacle.getFirstlySpottedOn().getTime()));
+            ps.setTimestamp(4, new Timestamp(obstacle.getLastlySpottedOn().getTime()));
+            ps.setFloat(5, obstacle.getIsAliveConfidence());
+            ps.setBoolean(6, obstacle.requiresService());
+            ps.executeUpdate();
+            ps.close();
+        } catch (SQLException ex) {
+            Log.e(TAG_SQL_ERROR, Log.getStackTraceString(ex));
+        }
+
+        obstacle.setObstacleId(obstacleId);
+
+        return obstacleId;
+    }
+
+    public boolean deleteObstacle(Obstacle obstacle) {
+        if (!isConnectionValid()) return false;
+
+        final String query = String.format("DELETE FROM %s.Obstacle WHERE obstacleId=?;", DBNAME);
+
+        long obstacleId = obstacle.getObstacleId();
+        if (!deleteAllLocations(obstacleId)) return false;
+
+        try {
+            PreparedStatement ps = mConn.prepareStatement(query);
+            ps.setLong(1, obstacleId);
+            ps.executeUpdate();
+            ps.close();
+        } catch (SQLException ex) {
+            Log.e(TAG_SQL_ERROR, Log.getStackTraceString(ex));
+            return false;
+        }
+
+        if (!deleteUnit(obstacleId)) return false;
+
+        return true;
     }
 
     public long putUnit() {
