@@ -2,6 +2,8 @@ package com.dkarageo.sladescompanion.vehicles;
 
 import android.graphics.drawable.Drawable;
 
+import com.dkarageo.sladescompanion.units.Location;
+
 
 public class Vehicle {
 
@@ -15,6 +17,7 @@ public class Vehicle {
     private int      mAutoDrivingSystemVersion;
     private int      mAutonomyLevel;
     private Drawable mVehicleImg;
+    private Location mLocation;
 
     public long getVehicleId() { return mVehicleId; }
     public String getLicenseNo() { return mLicenseNo; }
@@ -26,6 +29,7 @@ public class Vehicle {
     public int getAutonomyLevel() { return mAutonomyLevel; }
     public boolean lostTraction() { return mLostTraction; }
     public Drawable getVehicleImg() { return mVehicleImg; }
+    public Location getLocation() { return mLocation; }
 
     public void setVehicleId(long vehicleId) { mVehicleId = vehicleId; }
     public void setLicenseNo(String licenseNo) { mLicenseNo = licenseNo; }
@@ -35,6 +39,7 @@ public class Vehicle {
     public void setLostTraction(boolean lostTraction) { mLostTraction = lostTraction; }
     public void setAutonomyLevel(int autonomyLevel) { mAutonomyLevel = autonomyLevel; }
     public void setVehicleImg(Drawable vehicleImg) { mVehicleImg = vehicleImg; }
+    public void setLocation(Location location) { mLocation = location; }
 
     public void setAutoDrivingSystemName(String autoDrivingSystemName) {
         mAutoDrivingSystemName = autoDrivingSystemName;
