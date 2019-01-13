@@ -2,6 +2,7 @@ package com.dkarageo.sladescompanion;
 
 import com.dkarageo.sladescompanion.authorities.AuthoritiesFragment;
 import com.dkarageo.sladescompanion.vehicles.VehiclesFragment;
+import com.dkarageo.sladescompanion.vehicles.simulator.SimulationsManager;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -19,6 +20,10 @@ import java.util.Map;
 public class MainActivity extends AppCompatActivity {
 
     private BottomNavigationView navBar;
+
+    // Keep a reference of SimulationsManager singleton, to be sure that it lives as long as main
+    // activity lives.
+    private SimulationsManager mSimulationsManager;
 
     // A map for all active fragments navigable from bottom navigation bar.
     private Map<String, Fragment> mainScreens = new HashMap<>();
@@ -80,9 +85,11 @@ public class MainActivity extends AppCompatActivity {
             ft.add(R.id.mainActivity_contentWrapper, vehiclesScreen);
             mainScreens.put("vehicles_screen", vehiclesScreen);
             ft.commit();
+
+            mSimulationsManager = SimulationsManager.getSimulationsManager();
         }
 
-        navBar = (BottomNavigationView) findViewById(R.id.navbar);
+        navBar = findViewById(R.id.navbar);
         if (navBar == null) throw new RuntimeException("Failed to acquire bottom navigation bar.");
         navBar.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
     }
@@ -116,5 +123,12 @@ public class MainActivity extends AppCompatActivity {
         }
 
         switchCausedByBackButton = false;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        mSimulationsManager.terminateAllSimulations();
     }
 }
