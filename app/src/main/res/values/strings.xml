@@ -9,6 +9,16 @@
     <string name="vehicles_tab_summary_title">Summary</string>
     <string name="vehicles_tab_vehicle_detail_title">Vehicle</string>
 
+    <!-- Vehicles Summary Strings -->
+    <string name="vehicles_summary_header_title">Vehicle Management System</string>
+    <string name="vehicles_summary_connected_cars_hint">Total Vehicles:</string>
+    <string name="vehicles_summary_connected_cars_loading_hint">... please wait ...</string>
+    <string name="vehicles_summary_obstacles_spotted_hint">Obstacles Spotted:</string>
+    <string name="vehicles_summary_obstacles_spotted_loading_hint">... please wait ...</string>
+    <string name="vehicles_summary_active_simulations_hint">Active Simulations:</string>
+    <string name="vehicles_summary_total_latency_hint">Average Latency (ms):</string>
+    <string name="vehicles_summary_logo_icon_desc">Application logo</string>
+
     <!-- Vehicle Detail String -->
     <string name="vehicles_vehicle_title_hint">Title</string>
     <string name="vehicles_vehicle_title_prefix">Vehicle</string>

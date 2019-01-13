@@ -10,6 +10,16 @@
     <string name="vehicles_tab_summary_title">Σύνοψη</string>
     <string name="vehicles_tab_vehicle_detail_title">Όχημα</string>
 
+    <!-- Vehicles Summary Strings -->
+    <string name="vehicles_summary_header_title">Σύστημα Διαχείρισης Οχημάτων</string>
+    <string name="vehicles_summary_connected_cars_hint">Ενεργά Οχήματα:</string>
+    <string name="vehicles_summary_connected_cars_loading_hint">... παρακαλώ περιμένετε ...</string>
+    <string name="vehicles_summary_obstacles_spotted_hint">Εντοπισμένα Εμπόδια:</string>
+    <string name="vehicles_summary_obstacles_spotted_loading_hint">... παρακαλώ περιμένετε ...</string>
+    <string name="vehicles_summary_active_simulations_hint">Ενεργές Προσομοιώσεις:</string>
+    <string name="vehicles_summary_total_latency_hint">Μέση Καθυστέρηση (ms):</string>
+    <string name="vehicles_summary_logo_icon_desc">Εικονίδιο Εφαρμογής</string>
+
     <!-- Vehicle Detail String -->
     <string name="vehicles_vehicle_title_hint">Τίτλοσ</string>
     <string name="vehicles_vehicle_title_prefix">Όχημα</string>
