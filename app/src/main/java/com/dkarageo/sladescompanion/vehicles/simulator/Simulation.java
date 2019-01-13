@@ -115,7 +115,11 @@ public class Simulation {
                 try {
                     Thread.sleep(1000);
                 } catch (InterruptedException ex) {}
+
+                dbProxy.deleteAllLocations(v.getVehicleId());
             }
+
+            dbProxy.deleteVehicle(v);
 
             return null;
         }
