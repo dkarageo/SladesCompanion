@@ -4,9 +4,11 @@ import android.util.Log;
 
 import com.dkarageo.sladescompanion.authorities.Obstacle;
 import com.dkarageo.sladescompanion.authorities.RoadsideUnit;
+import com.dkarageo.sladescompanion.units.Location;
 import com.dkarageo.sladescompanion.vehicles.Vehicle;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -175,6 +177,40 @@ public class MaintainerDBProxy {
         }
 
         return unitId;
+    }
+
+    public int putLocation(long unitId, Location location) {
+        if (!isConnectionValid()) return -1;
+
+        final String query = String.format("INSERT INTO %s.Location (unitId, timestamp, validFrom, validTo, longitude, latitude, altitude, confidence, providerId) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)", DBNAME);
+        int locationId = -1;
+
+        try {
+            PreparedStatement ps = mConn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+
+            ps.setLong(1, unitId);
+            ps.setDate(2, new java.sql.Date(location.getTimestamp().getTime()));
+            ps.setDate(3, new java.sql.Date(location.getValidFrom().getTime()));
+            ps.setDate(4, new java.sql.Date(location.getValidTo().getTime()));
+            ps.setDouble(5, location.getLongitude());
+            ps.setDouble(6, location.getLatitude());
+            ps.setDouble(7, location.getAltitude());
+            ps.setFloat(8, location.getConfidence());
+            ps.setLong(9, unitId);  // TODO: It only works for vehicle locations. Do something better.
+
+            ps.executeUpdate();
+
+            ResultSet rs = ps.getGeneratedKeys();
+
+            if (rs.next()) locationId = rs.getInt(1);
+
+            ps.close();
+
+        } catch (SQLException ex) {
+            Log.e(TAG_SQL_ERROR, Log.getStackTraceString(ex));
+        }
+
+        return locationId;
     }
 
     public long putVehicle(Vehicle v) {
