@@ -4,15 +4,15 @@ import android.os.AsyncTask;
 import android.os.SystemClock;
 import android.util.Log;
 
+import com.dkarageo.sladescompanion.authorities.Obstacle;
 import com.dkarageo.sladescompanion.db.MaintainerDBProxy;
-import com.dkarageo.sladescompanion.units.Location;
 import com.dkarageo.sladescompanion.vehicles.Vehicle;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.Executors;
-import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class Simulation {
 
@@ -22,17 +22,20 @@ public class Simulation {
     private boolean mIsRunning;
     private boolean mFirstRun;
 
-    List<SimulationEventsListener> eventsListeners;
+    private List<SimulationEventsListener> mEventsListeners;
 
-    LinkedList<Integer> latestLatencies;
-    int latenciesSum;
+    private LinkedList<Integer> mLatestLatencies;
+    private int mLatenciesSum;
+
+    private List<Obstacle> mEncounteredObstacles;
 
 
     Simulation(Vehicle v) {
         mVehicle = v;
-        eventsListeners = new ArrayList<>();
-        latestLatencies = new LinkedList<>();
+        mEventsListeners = new ArrayList<>();
+        mLatestLatencies = new LinkedList<>();
         mFirstRun = true;
+        mEncounteredObstacles = new ArrayList<>();
     }
 
     public void start() {
@@ -47,31 +50,55 @@ public class Simulation {
     public long getUpdateInterval() { return UPDATE_INTERVAL; }
 
     public int getCurrentLatency() {
-        if (latestLatencies.size() > 0) return latenciesSum / latestLatencies.size();
+        if (mLatestLatencies.size() > 0) return mLatenciesSum / mLatestLatencies.size();
         else return 0;
     }
 
     public boolean isRunning() { return mIsRunning; }
 
     public void registerSimulationEventsListener(SimulationEventsListener l) {
-        eventsListeners.add(l);
+        mEventsListeners.add(l);
     }
 
     public void unregisterSimulationEventsListener(SimulationEventsListener l) {
-        eventsListeners.remove(l);
+        mEventsListeners.remove(l);
     }
 
     public void notifyOnSimulationError(String error) {
-        for (SimulationEventsListener l : eventsListeners) l.onSimulationError(error);
+        for (SimulationEventsListener l : mEventsListeners) l.onSimulationError(error);
     }
 
     public void notifyOnSimulationLocationUpdate(Vehicle v, int latency) {
-        for (SimulationEventsListener l : eventsListeners) l.onSimulationLocationUpdate(v, latency);
+        for (SimulationEventsListener l : mEventsListeners) l.onSimulationLocationUpdate(v, latency);
     }
 
     public interface SimulationEventsListener {
         void onSimulationError(String error);
         void onSimulationLocationUpdate(Vehicle v, int latency);
+    }
+
+    private Obstacle encountersNewObstacle() {
+        Obstacle newObstacle = null;
+
+        // 5% probability to meet an obstacle
+        if (ThreadLocalRandom.current().nextInt(0, 20) == 1) {
+            newObstacle = ObstacleGenerator.generateObstacle();
+
+            mEncounteredObstacles.add(newObstacle);
+            long obstacleId = MaintainerDBProxy.getMaintainerDBProxy().putObstacle(newObstacle);
+            newObstacle.setObstacleId(obstacleId);
+        }
+
+        return newObstacle;
+    }
+
+    private boolean deleteEncounteredObstacles() {
+        boolean rc = true;
+        for (Obstacle o : mEncounteredObstacles) {
+            rc &= MaintainerDBProxy.getMaintainerDBProxy().deleteObstacle(o);
+        }
+        mEncounteredObstacles.clear();
+        return rc;
     }
 
     private class SimulationWorker extends AsyncTask<Vehicle, Integer, Void> {
@@ -95,10 +122,14 @@ public class Simulation {
 
             Log.i("MySim", String.format("Car %s inserted to DB.\n", v.getModel()));
 
-            latestLatencies.clear();
-            latenciesSum = 0;
+            mLatestLatencies.clear();
+            mLatenciesSum = 0;
+
+            long nextTargetTime = SystemClock.elapsedRealtime();
 
             while (mIsRunning) {
+                nextTargetTime += 1000;
+
                 v.setLocation(LocationGenerator.generateNextLocation(v.getLocation()));
 
                 long startTime = SystemClock.elapsedRealtime();
@@ -106,19 +137,25 @@ public class Simulation {
                 long latency = SystemClock.elapsedRealtime() - startTime;
 
                 // Count the average of up to 30 previous latencies (moving average.
-                if (latestLatencies.size() >= 30) latenciesSum -= latestLatencies.pop();
-                latestLatencies.add((int) latency);
-                latenciesSum += (int) latency;
+                if (mLatestLatencies.size() >= 30) mLatenciesSum -= mLatestLatencies.pop();
+                mLatestLatencies.add((int) latency);
+                mLatenciesSum += (int) latency;
 
-                publishProgress(latenciesSum / latestLatencies.size());
+                publishProgress(mLatenciesSum / mLatestLatencies.size());
 
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException ex) {}
+                encountersNewObstacle();
+
+                long curTime = SystemClock.elapsedRealtime();
+                if (nextTargetTime - curTime > 0) {
+                    try {
+                        Thread.sleep(nextTargetTime - curTime);
+                    } catch (InterruptedException ex) {}
+                }
 
                 dbProxy.deleteAllLocations(v.getVehicleId());
             }
 
+            deleteEncounteredObstacles();
             dbProxy.deleteVehicle(v);
 
             return null;
