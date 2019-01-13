@@ -254,6 +254,26 @@ public class MaintainerDBProxy {
         return vehicleId;
     }
 
+    public int getVehiclesCount() {
+        if (!isConnectionValid()) return -2;
+
+        final String query = String.format("SELECT COUNT(vehicleId) FROM %s.Vehicle;", DBNAME);
+        int count = -1;
+
+        try {
+            Statement s = mConn.createStatement();
+            ResultSet rs = s.executeQuery(query);
+
+            if(rs.next()) count = rs.getInt(1);
+
+            s.close();
+        } catch (SQLException ex) {
+            Log.e(TAG_SQL_ERROR, Log.getStackTraceString(ex));
+        }
+
+        return count;
+    }
+
     public long putAutoDrivingSystem(String name, String manufacturer,
                                      int version, int autonomyLevel) {
         if (!isConnectionValid()) return -1;
