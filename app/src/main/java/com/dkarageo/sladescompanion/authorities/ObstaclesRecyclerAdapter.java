@@ -5,21 +5,28 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.TextView;
 
 import com.dkarageo.sladescompanion.R;
 import com.dkarageo.sladescompanion.utils.TextUtils;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 
 public class ObstaclesRecyclerAdapter
-        extends RecyclerView.Adapter<ObstaclesRecyclerAdapter.ObstacleViewHolder> {
+        extends RecyclerView.Adapter<ObstaclesRecyclerAdapter.ObstacleViewHolder>
+        implements Filterable {
 
     // A list containing all obstacles to be displayed.
     private List<Obstacle> mObstaclesToDisplay;
 
+    private List<Obstacle> mOriginalObstacles;
+    private ObstacleFilter mFilter;
+    private CharSequence   mActiveFilter;
 
     public static class ObstacleViewHolder extends RecyclerView.ViewHolder {
         TextView itemType;
@@ -38,7 +45,10 @@ public class ObstaclesRecyclerAdapter
     }
 
     public ObstaclesRecyclerAdapter(List<Obstacle> obstacles) {
+        mOriginalObstacles  = obstacles;
         mObstaclesToDisplay = obstacles;
+        mFilter             = new ObstacleFilter();
+        mActiveFilter       = null;
     }
 
     @Override
@@ -66,5 +76,54 @@ public class ObstaclesRecyclerAdapter
     @Override
     public int getItemCount() {
         return mObstaclesToDisplay.size();
+    }
+
+    public void updateDataset(List<Obstacle> obstacles) {
+        mOriginalObstacles = obstacles;
+        mFilter.filter(mActiveFilter);
+    }
+
+    @Override
+    public Filter getFilter() { return mFilter; }
+
+
+    private class ObstacleFilter extends Filter {
+
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            // Save current filter, to replay it when updating underlying dataset.
+            mActiveFilter = constraint;
+
+            FilterResults results = new FilterResults();
+
+            if (constraint == null || constraint.toString().equals("")) {
+                results.values = mOriginalObstacles;
+                results.count  = mOriginalObstacles.size();
+            } else {
+
+                List<Obstacle> filteredObstacles = new ArrayList<>();
+                String stringConstraint = constraint.toString();
+
+                for (Obstacle o : mOriginalObstacles) {
+                    String obstacleType = o.getObstacleType();
+
+                    if (obstacleType.toLowerCase().contains(stringConstraint.toLowerCase())) {
+                        filteredObstacles.add(o);
+                    }
+                }
+
+                results.values = filteredObstacles;
+                results.count  = filteredObstacles.size();
+            }
+
+            return results;
+        }
+
+        @SuppressWarnings("unchecked")
+        @Override
+        protected void publishResults(CharSequence constraint, Filter.FilterResults results) {
+            mObstaclesToDisplay = (List<Obstacle>) results.values;
+            notifyDataSetChanged();
+        }
     }
 }
