@@ -79,6 +79,7 @@ public class Simulation {
     public interface SimulationEventsListener {
         void onSimulationError(String error);
         void onSimulationLocationUpdate(Vehicle v, int latency);
+        void onObstacleSpotted(int obstaclesCount);
     }
 
     private Obstacle encountersNewObstacle() {
