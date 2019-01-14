@@ -20,7 +20,6 @@ public class Simulation {
 
     private Vehicle mVehicle;
     private boolean mIsRunning;
-    private boolean mFirstRun;
 
     private List<SimulationEventsListener> mEventsListeners;
 
@@ -34,7 +33,6 @@ public class Simulation {
         mVehicle = v;
         mEventsListeners = new ArrayList<>();
         mLatestLatencies = new LinkedList<>();
-        mFirstRun = true;
         mEncounteredObstacles = new ArrayList<>();
     }
 
@@ -117,13 +115,9 @@ public class Simulation {
 
             MaintainerDBProxy dbProxy = MaintainerDBProxy.getMaintainerDBProxy();
 
-            if (mFirstRun) {
-                // Initially put the vehicle to db and acquire its generate id.
-                long vehicleId = dbProxy.putVehicle(v);
-                v.setVehicleId(vehicleId);
-
-                mFirstRun = false;
-            }
+            // Initially put the vehicle to db and acquire its generate id.
+            long vehicleId = dbProxy.putVehicle(v);
+            v.setVehicleId(vehicleId);
 
             Log.i("MySim", String.format("Car %s inserted to DB.\n", v.getModel()));
 
