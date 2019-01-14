@@ -6,20 +6,27 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.TextView;
 
 import com.dkarageo.sladescompanion.R;
 import com.dkarageo.sladescompanion.utils.TextUtils;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 
 public class RoadsideUnitsRecyclerAdapter
-        extends RecyclerView.Adapter<RoadsideUnitsRecyclerAdapter.RUViewHolder> {
+        extends RecyclerView.Adapter<RoadsideUnitsRecyclerAdapter.RUViewHolder>
+        implements Filterable {
 
     private List<RoadsideUnit> mUnitsToDisplay;  // A list containing all RUs to be displayed.
 
+    private List<RoadsideUnit> mOriginalRoadsideUnits;
+    private RoadsideUnitFilter mFilter;
+    private CharSequence       mActiveFilter;
 
     public static class RUViewHolder extends RecyclerView.ViewHolder {
         public CardView mItem;
@@ -42,6 +49,8 @@ public class RoadsideUnitsRecyclerAdapter
 
     public RoadsideUnitsRecyclerAdapter(List<RoadsideUnit> roadsideUnits) {
         mUnitsToDisplay = roadsideUnits;
+        mFilter         = new RoadsideUnitFilter();
+        mActiveFilter   = null;
     }
 
     @Override
@@ -78,5 +87,54 @@ public class RoadsideUnitsRecyclerAdapter
     @Override
     public int getItemCount() {
         return mUnitsToDisplay.size();
+    }
+
+    public void updateDataset(List<RoadsideUnit> roadsideUnits) {
+        mOriginalRoadsideUnits = roadsideUnits;
+        mFilter.filter(mActiveFilter);
+    }
+
+    @Override
+    public Filter getFilter() { return mFilter; }
+
+
+    private class RoadsideUnitFilter extends Filter {
+
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            // Save current filter, to replay it when updating underlying dataset.
+            mActiveFilter = constraint;
+
+            FilterResults results = new FilterResults();
+
+            if (constraint == null || constraint.toString().equals("")) {
+                results.values = mOriginalRoadsideUnits;
+                results.count  = mOriginalRoadsideUnits.size();
+            } else {
+
+                List<RoadsideUnit> filteredObstacles = new ArrayList<>();
+                String stringConstraint = constraint.toString();
+
+                for (RoadsideUnit ru : mOriginalRoadsideUnits) {
+                    String roadsideUnitType = ru.getSensorType();
+
+                    if (roadsideUnitType.toLowerCase().contains(stringConstraint.toLowerCase())) {
+                        filteredObstacles.add(ru);
+                    }
+                }
+
+                results.values = filteredObstacles;
+                results.count  = filteredObstacles.size();
+            }
+
+            return results;
+        }
+
+        @SuppressWarnings("unchecked")
+        @Override
+        protected void publishResults(CharSequence constraint, Filter.FilterResults results) {
+            mUnitsToDisplay = (List<RoadsideUnit>) results.values;
+            notifyDataSetChanged();
+        }
     }
 }

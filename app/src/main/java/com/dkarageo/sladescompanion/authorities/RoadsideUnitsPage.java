@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,15 +16,18 @@ import com.dkarageo.sladescompanion.db.MaintainerDBProxy;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Executors;
 
 
 public class RoadsideUnitsPage extends Fragment {
 
-    RecyclerView mRecyclerView;
-    RecyclerView.Adapter mAdapter;
-    RecyclerView.LayoutManager mLayoutManager;
+    RecyclerView                 mRecyclerView;
+    RoadsideUnitsRecyclerAdapter mAdapter;
+    RecyclerView.LayoutManager   mLayoutManager;
 
     List<RoadsideUnit> mRoadsideUnits;
+
+    SearchView mSearchBar;
 
 
     public RoadsideUnitsPage() {
@@ -47,7 +51,12 @@ public class RoadsideUnitsPage extends Fragment {
         mAdapter = new RoadsideUnitsRecyclerAdapter(mRoadsideUnits);
         mRecyclerView.setAdapter(mAdapter);
 
-        if (savedInstanceState == null) new RoadsideUnitsFetcher().execute();
+        mSearchBar = rootView.findViewById(R.id.roadside_units_search_bar);
+        mSearchBar.setOnQueryTextListener(new SearchListener());
+
+        if (savedInstanceState == null) {
+            new RoadsideUnitsFetcher().executeOnExecutor(Executors.newFixedThreadPool(16));
+        }
 
         return rootView;
     }
@@ -63,7 +72,23 @@ public class RoadsideUnitsPage extends Fragment {
         protected void onPostExecute(List<RoadsideUnit> units) {
             mRoadsideUnits.clear();
             mRoadsideUnits.addAll(units);
-            mAdapter.notifyDataSetChanged();
+            mAdapter.updateDataset(mRoadsideUnits);
+        }
+    }
+
+
+    class SearchListener implements SearchView.OnQueryTextListener {
+
+        @Override
+        public boolean onQueryTextSubmit(String query) {
+            mAdapter.getFilter().filter(query);
+            return true;
+        }
+
+        @Override
+        public boolean onQueryTextChange(String newText) {
+            mAdapter.getFilter().filter(newText);
+            return false;
         }
     }
 }

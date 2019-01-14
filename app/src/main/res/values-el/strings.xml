@@ -51,6 +51,7 @@
     <string name="roadside_units_items_last_service_hint">Τελευταία Συντήρηση:</string>
     <string name="roadside_units_items_id_hint">Id</string>
     <string name="roadside_units_items_manufacturer_hint">Κατασκευαστής:</string>
+    <string name="roadside_units_search_bar_hint">Αναζήτηση αισθητήρων</string>
 
     <!-- Obstacles Fragment Strings -->
     <string name="obstacles_items_type_hint">Τύπος Εμποδίου</string>

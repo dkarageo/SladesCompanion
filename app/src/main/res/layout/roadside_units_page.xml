@@ -1,13 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".authorities.RoadsideUnitsPage"
     android:paddingBottom="8dp"
     android:paddingTop="8dp"
     android:paddingLeft="8dp"
-    android:paddingRight="8dp">
+    android:paddingRight="8dp"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.SearchView
+        android:id="@+id/roadside_units_search_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        app:iconifiedByDefault="false"
+        app:queryHint="@string/roadside_units_search_bar_hint"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/roadside_units_recycler_view"
@@ -15,4 +25,4 @@
         android:layout_height="match_parent"
         android:scrollbars="vertical"/>
 
-</FrameLayout>
+</LinearLayout>
