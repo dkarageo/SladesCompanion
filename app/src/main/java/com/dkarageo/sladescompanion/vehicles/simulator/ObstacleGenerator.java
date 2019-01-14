@@ -15,7 +15,7 @@ public class ObstacleGenerator {
             "glass_shards",
             "metallic_shards",
             "corpse",
-            "sleeping_grandma_with_walking_stick",
+            "sleeping_grandma_with_stick",
             "other"
     };
 
