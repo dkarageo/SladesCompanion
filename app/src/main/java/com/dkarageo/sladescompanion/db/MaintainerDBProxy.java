@@ -273,9 +273,9 @@ public class MaintainerDBProxy {
             PreparedStatement ps = mConn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
 
             ps.setLong(1, unitId);
-            ps.setDate(2, new java.sql.Date(location.getTimestamp().getTime()));
-            ps.setDate(3, new java.sql.Date(location.getValidFrom().getTime()));
-            ps.setDate(4, new java.sql.Date(location.getValidTo().getTime()));
+            ps.setTimestamp(2, new java.sql.Timestamp(location.getTimestamp().getTime()));
+            ps.setTimestamp(3, new java.sql.Timestamp(location.getValidFrom().getTime()));
+            ps.setTimestamp(4, new java.sql.Timestamp(location.getValidTo().getTime()));
             ps.setDouble(5, location.getLongitude());
             ps.setDouble(6, location.getLatitude());
             ps.setDouble(7, location.getAltitude());
