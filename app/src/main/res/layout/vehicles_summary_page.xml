@@ -55,6 +55,18 @@
             android:layout_marginTop="8dp">
 
             <TextView
+                android:id="@+id/vehicles_summary_system_status_header_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_columnSpan="2"
+                android:textSize="16sp"
+                app:layout_gravity="center"
+                android:text="@string/vehicles_summary_system_status_header_title"
+                android:textColor="@color/colorPrimaryDark"
+                android:textStyle="bold"
+                android:layout_marginBottom="8dp" />
+
+            <TextView
                 android:id="@+id/vehicles_summary_connected_cars_hint"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -62,7 +74,7 @@
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="4dp"
                 android:textStyle="bold"
-                android:textSize="16sp" />
+                android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/vehicles_summary_connected_cars"
@@ -70,7 +82,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/vehicles_summary_connected_cars_loading_hint"
                 android:textStyle="bold"
-                android:textSize="16sp" />
+                android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/vehicles_summary_obstacles_spotted_hint"
@@ -78,7 +90,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/vehicles_summary_obstacles_spotted_hint"
                 android:layout_marginBottom="4dp"
-                android:textSize="16sp" />
+                android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/vehicles_summary_obstacles_spotted"
@@ -86,7 +98,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/vehicles_summary_obstacles_spotted_loading_hint"
                 android:hint="@string/vehicles_summary_obstacles_spotted_hint"
-                android:textSize="16sp" />
+                android:textSize="14sp" />
 
             <View
                 android:id="@+id/vehicles_summary_vehicles_simulation_info_divider"
@@ -95,8 +107,20 @@
                 android:background="@color/colorPrimaryDark"
                 app:layout_constraintTop_toBottomOf="@id/vehicles_summary_logo_icon"
                 android:layout_marginTop="16dp"
-                android:layout_marginBottom="16dp"
+                android:layout_marginBottom="8dp"
                 app:layout_columnSpan="2" />
+
+            <TextView
+                android:id="@+id/vehicles_summary_simulator_header_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_columnSpan="2"
+                android:textSize="16sp"
+                app:layout_gravity="center"
+                android:text="@string/vehicles_summary_simulator_header_title"
+                android:textColor="@color/colorPrimaryDark"
+                android:textStyle="bold"
+                android:layout_marginBottom="8dp" />
 
             <TextView
                 android:id="@+id/vehicles_summary_active_simulations_hint"
@@ -105,7 +129,7 @@
                 android:text="@string/vehicles_summary_active_simulations_hint"
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="4dp"
-                android:textSize="16sp"
+                android:textSize="14sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -113,7 +137,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:hint="@string/vehicles_summary_active_simulations_hint"
-                android:textSize="16sp"
+                android:textSize="14sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -123,14 +147,14 @@
                 android:text="@string/vehicles_summary_simulation_spotted_obstacles_hint"
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="4dp"
-                android:textSize="16sp" />
+                android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/vehicles_summary_simulation_spotted_obstacles"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:hint="@string/vehicles_summary_simulation_spotted_obstacles_hint"
-                android:textSize="16sp" />
+                android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/vehicles_summary_total_latency_hint"
@@ -139,7 +163,7 @@
                 android:text="@string/vehicles_summary_total_latency_hint"
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="4dp"
-                android:textSize="16sp"
+                android:textSize="14sp"
                 android:textColor="@color/red"
                 android:textStyle="bold" />
 
@@ -148,7 +172,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:hint="@string/vehicles_summary_total_latency_hint"
-                android:textSize="16sp"
+                android:textSize="14sp"
                 android:textColor="@color/red"
                 android:textStyle="bold" />
 

@@ -19,6 +19,8 @@
     <string name="vehicles_summary_total_latency_hint">Average Latency (ms):</string>
     <string name="vehicles_summary_logo_icon_desc">Application logo</string>
     <string name="vehicles_summary_simulation_spotted_obstacles_hint">Obstacles on Simulator:</string>
+    <string name="vehicles_summary_system_status_header_title">System Status</string>
+    <string name="vehicles_summary_simulator_header_title">Simulator Status</string>
 
     <!-- Vehicle Detail String -->
     <string name="vehicles_vehicle_title_hint">Title</string>

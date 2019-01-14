@@ -20,6 +20,8 @@
     <string name="vehicles_summary_total_latency_hint">Μέση Καθυστέρηση (ms):</string>
     <string name="vehicles_summary_logo_icon_desc">Εικονίδιο Εφαρμογής</string>
     <string name="vehicles_summary_simulation_spotted_obstacles_hint">Προσομοιωμένα Εμπόδια:</string>
+    <string name="vehicles_summary_system_status_header_title">Κατάσταση Συστήματος</string>
+    <string name="vehicles_summary_simulator_header_title">Κατάσταση Προσομοιωτή</string>
 
     <!-- Vehicle Detail String -->
     <string name="vehicles_vehicle_title_hint">Τίτλοσ</string>
