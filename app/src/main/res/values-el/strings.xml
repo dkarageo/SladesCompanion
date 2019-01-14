@@ -19,6 +19,7 @@
     <string name="vehicles_summary_active_simulations_hint">Ενεργές Προσομοιώσεις:</string>
     <string name="vehicles_summary_total_latency_hint">Μέση Καθυστέρηση (ms):</string>
     <string name="vehicles_summary_logo_icon_desc">Εικονίδιο Εφαρμογής</string>
+    <string name="vehicles_summary_simulation_spotted_obstacles_hint">Προσομοιωμένα Εμπόδια:</string>
 
     <!-- Vehicle Detail String -->
     <string name="vehicles_vehicle_title_hint">Τίτλοσ</string>

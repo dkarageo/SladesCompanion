@@ -27,6 +27,7 @@ public class VehiclesSummaryPage extends Fragment {
     TextView mObstaclesSpotted;
     TextView mActiveSimulations;
     TextView mTotalLatency;
+    TextView mSimObstaclesSpotted;
 
     // Data acquired from DB.
     int     mVehiclesCount;
@@ -68,10 +69,12 @@ public class VehiclesSummaryPage extends Fragment {
         View rootView = inflater.inflate(
                 R.layout.vehicles_summary_page, container, false);
 
-        mConnectedCars     = rootView.findViewById(R.id.vehicles_summary_connected_cars);
-        mObstaclesSpotted  = rootView.findViewById(R.id.vehicles_summary_obstacles_spotted);
-        mActiveSimulations = rootView.findViewById(R.id.vehicles_summary_active_simulations);
-        mTotalLatency      = rootView.findViewById(R.id.vehicles_summary_total_latency);
+        mConnectedCars       = rootView.findViewById(R.id.vehicles_summary_connected_cars);
+        mObstaclesSpotted    = rootView.findViewById(R.id.vehicles_summary_obstacles_spotted);
+        mActiveSimulations   = rootView.findViewById(R.id.vehicles_summary_active_simulations);
+        mTotalLatency        = rootView.findViewById(R.id.vehicles_summary_total_latency);
+        mSimObstaclesSpotted = rootView.findViewById(
+                R.id.vehicles_summary_simulation_spotted_obstacles);
 
         updateSimulationsData();
 
@@ -103,6 +106,7 @@ public class VehiclesSummaryPage extends Fragment {
         SimulationsManager sm = SimulationsManager.getSimulationsManager();
         mActiveSimulations.setText(Integer.toString(sm.getActiveSimulationsCount()));
         mTotalLatency.setText(Integer.toString(sm.getTotalAverageLatencyForActiveSimulations()));
+        mSimObstaclesSpotted.setText(Integer.toString(sm.getTotalEncounteredObstaclesCount()));
     }
 
     private void updateSystemData() {

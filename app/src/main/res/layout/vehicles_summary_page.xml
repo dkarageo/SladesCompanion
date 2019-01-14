@@ -117,6 +117,22 @@
                 android:textStyle="bold" />
 
             <TextView
+                android:id="@+id/vehicles_summary_simulation_spotted_obstacles_hint"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/vehicles_summary_simulation_spotted_obstacles_hint"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="4dp"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/vehicles_summary_simulation_spotted_obstacles"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="@string/vehicles_summary_simulation_spotted_obstacles_hint"
+                android:textSize="16sp" />
+
+            <TextView
                 android:id="@+id/vehicles_summary_total_latency_hint"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
