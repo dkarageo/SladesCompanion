@@ -222,6 +222,21 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:hint="@string/vehicles_vehicle_sim_update_interval_hint" />
+
+            <TextView
+                android:id="@+id/vehicles_vehicle_sim_spotted_obstacles_hint"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/vehicles_vehicle_sim_spotted_obstacles_hint"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="4dp" />
+
+            <TextView
+                android:id="@+id/vehicles_vehicle_sim_spotted_obstacles"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="@string/vehicles_vehicle_sim_spotted_obstacles_hint" />
+
         </android.support.v7.widget.GridLayout>
 
     </android.support.constraint.ConstraintLayout>

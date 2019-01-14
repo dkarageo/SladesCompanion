@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.dkarageo.sladescompanion.App;
 import com.dkarageo.sladescompanion.R;
+import com.dkarageo.sladescompanion.authorities.Obstacle;
 import com.dkarageo.sladescompanion.vehicles.simulator.Simulation;
 import com.dkarageo.sladescompanion.vehicles.simulator.SimulationsManager;
 
@@ -38,6 +39,7 @@ public class VehicleDetailPage extends Fragment
     TextView   mSimLatency;
     TextView   mSimUpdateInterval;
     TextView   mSimStoppedHint;
+    TextView   mSimObstaclesSpotted;
 
     Vehicle mVehicle;  // Vehicle associated with current fragment.
 
@@ -95,6 +97,7 @@ public class VehicleDetailPage extends Fragment
         mSimLatency           = rootView.findViewById((R.id.vehicles_vehicle_sim_latency));
         mSimUpdateInterval    = rootView.findViewById((R.id.vehicles_vehicle_sim_update_interval));
         mSimStoppedHint       = rootView.findViewById((R.id.vehicles_vehicle_sim_stopped_hint));
+        mSimObstaclesSpotted  = rootView.findViewById((R.id.vehicles_vehicle_sim_spotted_obstacles));
 
         // Set listener for operation switch button and fix its state.
         mOperationSwitch.setOnClickListener(new View.OnClickListener() {
@@ -155,6 +158,11 @@ public class VehicleDetailPage extends Fragment
     @Override
     public void onSimulationLocationUpdate(Vehicle v, int latency) {
         mSimLatency.setText(Integer.toString(latency));
+    }
+
+    @Override
+    public void onObstacleSpotted(int obstaclesCount) {
+        mSimObstaclesSpotted.setText(Integer.toString(obstaclesCount));
     }
 
     public String getTitle() {
@@ -226,6 +234,8 @@ public class VehicleDetailPage extends Fragment
 
             if (mSimulation != null) {
                 mSimUpdateInterval.setText(Long.toString(mSimulation.getUpdateInterval()));
+                mSimObstaclesSpotted.setText(
+                        Integer.toString(mSimulation.getEncounteredObstaclesCount()));
 
                 int latency = mSimulation.getCurrentLatency();
                 if (latency == 0) {

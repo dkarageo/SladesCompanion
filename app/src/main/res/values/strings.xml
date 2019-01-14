@@ -38,6 +38,7 @@
     <string name="vehicles_vehicle_sim_latency_hint">Latency (ms):</string>
     <string name="vehicles_vehicle_sim_update_interval_hint">Update Interval (ms):</string>
     <string name="vehicles_vehicle_sim_update_latency_wait_hint">... please wait ...</string>
+    <string name="vehicles_vehicle_sim_spotted_obstacles_hint">Spotted Obstacles:</string>
 
     <!-- Authorities Tabs Titles -->
     <string name="authorities_tab_roadsideunits_title">Roadside Units</string>
