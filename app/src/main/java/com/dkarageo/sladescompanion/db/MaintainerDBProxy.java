@@ -65,25 +65,17 @@ public class MaintainerDBProxy {
 
     private MaintainerDBProxy() {}
 
-    public List<RoadsideUnit> getRoadsideUnits() {
+    public List<RoadsideUnit> getRoadsideUnits(boolean sortByIsFunctioningProperly) {
+        if (!isConnectionValid()) return null;
 
         ArrayList<RoadsideUnit> units = new ArrayList<>();
 
-        if (mConn == null) {
-            try {
-                mConn = openConnection();
-            } catch (SQLException ex) {
-                Log.e(TAG_SQL_ERROR, Log.getStackTraceString(ex));
-            } finally {
-                if (mConn == null) return units;  // When no connection to db, return an empty list.
-            }
-        }
-
-        Statement s = null;
-        String query = "SELECT * FROM sladesdb.roadsidesensor";
+        String query  = "SELECT * FROM sladesdb.roadsidesensor ";
+        String orderBy = "ORDER BY isFunctioningProperly ASC";
+        if (sortByIsFunctioningProperly) query = query + orderBy;
 
         try {
-            s = mConn.createStatement();
+            Statement s = mConn.createStatement();
             ResultSet rs = s.executeQuery(query);
 
             while (rs.next()) {

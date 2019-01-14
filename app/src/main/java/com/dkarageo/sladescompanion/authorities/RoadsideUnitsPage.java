@@ -64,8 +64,8 @@ public class RoadsideUnitsPage extends Fragment {
     class RoadsideUnitsFetcher extends AsyncTask<String, Void, List<RoadsideUnit>> {
         @Override
         protected List<RoadsideUnit> doInBackground(String... params) {
-            List<RoadsideUnit> units = MaintainerDBProxy.getMaintainerDBProxy().getRoadsideUnits();
-            return units;
+            MaintainerDBProxy dbProxy = MaintainerDBProxy.getMaintainerDBProxy();
+            return dbProxy.getRoadsideUnits(true);
         }
 
         @Override
