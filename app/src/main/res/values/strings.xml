@@ -59,6 +59,22 @@
     <string name="obstacles_items_lastly_spotted_date_hint">Lastly Spotted:</string>
     <string name="obstacles_search_bar_hint">Search obstacle</string>
 
+    <!-- About Screen Strings -->
+    <string name="about_logo_description">Application logo</string>
+    <string name="about_app_name">Slades Companion</string>
+    <string name="about_creator">
+        Created by Dimitrios Karageorgiou
+        \n\-\- karageods@auth.gr \-\-
+    </string>
+    <string name="about_more">
+        During course \"Database Systems\"
+        \nElectrical and Computers Engineering Department
+        \nAuTh, GR - 2018-2019 \n
+        \nSource code can be found on Github:
+        \nhttps://github.com/dkarageo/SladesCompanion
+        \n\nLicensed under GNU GPL v3.0 license.
+    </string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

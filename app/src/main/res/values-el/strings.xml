@@ -60,4 +60,19 @@
     <string name="obstacles_items_lastly_spotted_date_hint">Εντοπίστηκε τελευταία:</string>
     <string name="obstacles_search_bar_hint">Αναζήτηση εμποδίων</string>
 
+    <!-- About Screen Strings -->
+    <string name="about_logo_description">Εικονίδιο εφαρμογής</string>
+    <string name="about_app_name">Slades Companion</string>
+    <string name="about_creator">
+        Αναπτύχθηκε από τον Δημήτριο Καραγεωργίου
+        \n\-\- karageods@auth.gr \-\-
+    </string>
+    <string name="about_more">
+        Στα πλαίσια του μαθήματος \"Βάσεις Δεδομένων\"
+        \nΤμήμα ΗΜΜΥ ΑΠΘ - 2018-2019 \n
+        \nRepo της εφαρμογής στο Github:
+        \nhttps://github.com/dkarageo/SladesCompanion
+        \n\nΥπό την άδεια GNU GPL v3.0
+    </string>
+
 </resources>
