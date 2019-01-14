@@ -10,7 +10,9 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
 
 import java.util.HashMap;
@@ -92,6 +94,11 @@ public class MainActivity extends AppCompatActivity {
         navBar = findViewById(R.id.navbar);
         if (navBar == null) throw new RuntimeException("Failed to acquire bottom navigation bar.");
         navBar.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
+        try {
+            getSupportActionBar().setCustomView(R.layout.action_bar_layout);
+            getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        } catch (NullPointerException ex) {}
     }
 
     @Override
