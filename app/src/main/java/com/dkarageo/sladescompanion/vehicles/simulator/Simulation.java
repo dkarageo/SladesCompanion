@@ -54,6 +54,10 @@ public class Simulation {
         else return 0;
     }
 
+    public int getEncounteredObstaclesCount() {
+        return mEncounteredObstacles.size();
+    }
+
     public boolean isRunning() { return mIsRunning; }
 
     public void registerSimulationEventsListener(SimulationEventsListener l) {

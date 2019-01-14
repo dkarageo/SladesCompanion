@@ -44,6 +44,12 @@ public class SimulationsManager {
         return activeSims;
     }
 
+    public int getTotalEncounteredObstaclesCount() {
+        int encounteredObstacles = 0;
+        for (Simulation s : mSimulations) encounteredObstacles += s.getEncounteredObstaclesCount();
+        return encounteredObstacles;
+    }
+
     public int getTotalAverageLatencyForActiveSimulations() {
         int totalLatency = 0;
         int totalActives = 0;
