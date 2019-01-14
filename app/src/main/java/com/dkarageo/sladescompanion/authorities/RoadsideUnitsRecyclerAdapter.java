@@ -48,9 +48,10 @@ public class RoadsideUnitsRecyclerAdapter
     }
 
     public RoadsideUnitsRecyclerAdapter(List<RoadsideUnit> roadsideUnits) {
-        mUnitsToDisplay = roadsideUnits;
-        mFilter         = new RoadsideUnitFilter();
-        mActiveFilter   = null;
+        mOriginalRoadsideUnits = roadsideUnits;
+        mUnitsToDisplay        = roadsideUnits;
+        mFilter                = new RoadsideUnitFilter();
+        mActiveFilter          = null;
     }
 
     @Override
