@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.dkarageo.sladescompanion.R;
+import com.dkarageo.sladescompanion.utils.TextUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -54,7 +55,7 @@ public class ObstaclesRecyclerAdapter
         Obstacle curObst = mObstaclesToDisplay.get(position);
 
         // Update contents of given view holder to the new one.
-        holder.itemType.setText(curObst.getObstacleType());
+        holder.itemType.setText(TextUtils.toCamelCase(curObst.getObstacleType()));
         holder.itemId.setText(Long.toString(curObst.getObstacleId()));
         holder.firstlySpottedDate.setText(
                 new SimpleDateFormat("dd-MM-yyyy").format(curObst.getFirstlySpottedOn()));

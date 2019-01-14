@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.dkarageo.sladescompanion.R;
+import com.dkarageo.sladescompanion.utils.TextUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -57,7 +58,7 @@ public class RoadsideUnitsRecyclerAdapter
         RoadsideUnit curUnit = mUnitsToDisplay.get(position);
 
         // Update contents of given view holder to the new one.
-        holder.mItemType.setText(curUnit.getSensorType());
+        holder.mItemType.setText(TextUtils.toCamelCase(curUnit.getSensorType()));
         holder.mItemId.setText(Long.toString(curUnit.getSensorId()));
         holder.mItemOperator.setText(curUnit.getOperator());
         holder.mItemManufacturer.setText(curUnit.getManufacturer());
