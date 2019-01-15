@@ -6,6 +6,9 @@
     <string name="navBar_title_vehicles">Οχήματα</string>
     <string name="navBar_title_authorities">Συντήρηση</string>
 
+    <!-- Action Bar Menu -->
+    <string name="action_bar_about_title">Σχετικά</string>
+
     <!-- Vehicles Tabs Titles -->
     <string name="vehicles_tab_summary_title">Σύνοψη</string>
     <string name="vehicles_tab_vehicle_detail_title">Όχημα</string>

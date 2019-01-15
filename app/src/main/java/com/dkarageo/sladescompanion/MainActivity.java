@@ -4,6 +4,7 @@ import com.dkarageo.sladescompanion.authorities.AuthoritiesFragment;
 import com.dkarageo.sladescompanion.vehicles.VehiclesFragment;
 import com.dkarageo.sladescompanion.vehicles.simulator.SimulationsManager;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -13,6 +14,8 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import java.util.HashMap;
@@ -137,5 +140,23 @@ public class MainActivity extends AppCompatActivity {
         super.onDestroy();
 
         mSimulationsManager.terminateAllSimulations();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.action_bar_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_bar_about:
+                startActivity(new Intent(this, AboutActivity.class));
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }

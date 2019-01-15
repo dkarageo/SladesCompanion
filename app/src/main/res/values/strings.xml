@@ -5,6 +5,9 @@
     <string name="navBar_title_vehicles">Vehicles</string>
     <string name="navBar_title_authorities">Authorities</string>
 
+    <!-- Action Bar Menu -->
+    <string name="action_bar_about_title">About</string>
+
     <!-- Vehicles Tabs Titles -->
     <string name="vehicles_tab_summary_title">Summary</string>
     <string name="vehicles_tab_vehicle_detail_title">Vehicle</string>
