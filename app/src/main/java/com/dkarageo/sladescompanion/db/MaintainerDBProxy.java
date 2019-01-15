@@ -165,6 +165,27 @@ public class MaintainerDBProxy {
         return obstacles;
     }
 
+    public boolean updateObstacleRequiresMaintanceState(Obstacle o, boolean newState) {
+        if (!isConnectionValid()) return false;
+
+        String query = String.format("UPDATE %s.obstacle SET requiresService = ? WHERE obstacleId = ?;", DBNAME);
+
+        try {
+            PreparedStatement ps = mConn.prepareStatement(query);
+
+            ps.setBoolean(1, newState);
+            ps.setLong(2, o.getObstacleId());
+
+            ps.executeUpdate();
+            ps.close();
+        } catch (SQLException ex) {
+            Log.e(TAG_SQL_ERROR, Log.getStackTraceString(ex));
+            return false;
+        }
+
+        return true;
+    }
+
     public long putObstacle(Obstacle obstacle) {
         if (!isConnectionValid()) return -2;
 

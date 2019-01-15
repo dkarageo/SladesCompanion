@@ -19,7 +19,9 @@ import java.util.List;
 import java.util.concurrent.Executors;
 
 
-public class ObstaclesPage extends Fragment {
+public class ObstaclesPage
+        extends Fragment
+        implements ObstaclesRecyclerAdapter.OnCleanupRequestListener {
 
     RecyclerView mRecyclerView;
     ObstaclesRecyclerAdapter mAdapter;
@@ -61,6 +63,24 @@ public class ObstaclesPage extends Fragment {
         return rootView;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        mAdapter.registerOnCleanupRequestListener(this);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        mAdapter.unregisterOnCleanupRequestListener(this);
+    }
+
+    @Override
+    public void onCleanupRequested(Obstacle unitToUpdate) {
+        new CleanupStateUpdater().executeOnExecutor(Executors.newFixedThreadPool(16),
+                unitToUpdate);
+    }
+
 
     class ObstaclesFetcher extends AsyncTask<String, Void, List<Obstacle>> {
         @Override
@@ -91,6 +111,23 @@ public class ObstaclesPage extends Fragment {
         public boolean onQueryTextChange(String newText) {
             mAdapter.getFilter().filter(newText);
             return false;
+        }
+    }
+
+
+    private class CleanupStateUpdater extends AsyncTask<Obstacle, Void, Void> {
+        @Override
+        protected Void doInBackground(Obstacle... params) {
+            Obstacle obstacleToUpdate = params[0];
+            MaintainerDBProxy dbProxy = MaintainerDBProxy.getMaintainerDBProxy();
+            boolean rc = dbProxy.updateObstacleRequiresMaintanceState(obstacleToUpdate, false);
+            if (rc) mObstacles.remove(obstacleToUpdate);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void args) {
+            mAdapter.updateDataset(mObstacles);
         }
     }
 }

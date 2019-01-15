@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
@@ -28,11 +29,14 @@ public class ObstaclesRecyclerAdapter
     private ObstacleFilter mFilter;
     private CharSequence   mActiveFilter;
 
+    private List<OnCleanupRequestListener> mCleanupListeners;
+
     public static class ObstacleViewHolder extends RecyclerView.ViewHolder {
         TextView itemType;
         TextView itemId;
         TextView firstlySpottedDate;
         TextView lastlySpottedDate;
+        Button   mCleanupButton;
 
         public ObstacleViewHolder(View v) {
             super(v);
@@ -41,6 +45,7 @@ public class ObstaclesRecyclerAdapter
             itemId             = v.findViewById(R.id.obstacles_item_id);
             firstlySpottedDate = v.findViewById(R.id.obstacles_item_firstly_spotted_date);
             lastlySpottedDate  = v.findViewById(R.id.obstacles_item_lastly_spotted_date);
+            mCleanupButton     = v.findViewById(R.id.obstacles_item_cleanup_button);
         }
     }
 
@@ -49,6 +54,7 @@ public class ObstaclesRecyclerAdapter
         mObstaclesToDisplay = obstacles;
         mFilter             = new ObstacleFilter();
         mActiveFilter       = null;
+        mCleanupListeners   = new ArrayList<>();
     }
 
     @Override
@@ -71,6 +77,8 @@ public class ObstaclesRecyclerAdapter
                 new SimpleDateFormat("dd-MM-yyyy").format(curObst.getFirstlySpottedOn()));
         holder.lastlySpottedDate.setText(
                 new SimpleDateFormat("dd-MM-yyyy").format(curObst.getLastlySpottedOn()));
+
+        holder.mCleanupButton.setOnClickListener(new OnCleanupButtonClickedListener(curObst));
     }
 
     @Override
@@ -86,6 +94,13 @@ public class ObstaclesRecyclerAdapter
     @Override
     public Filter getFilter() { return mFilter; }
 
+    public void registerOnCleanupRequestListener(OnCleanupRequestListener l) {
+        mCleanupListeners.add(l);
+    }
+
+    public void unregisterOnCleanupRequestListener(OnCleanupRequestListener l) {
+        mCleanupListeners.remove(l);
+    }
 
     private class ObstacleFilter extends Filter {
 
@@ -125,5 +140,32 @@ public class ObstaclesRecyclerAdapter
             mObstaclesToDisplay = (List<Obstacle>) results.values;
             notifyDataSetChanged();
         }
+    }
+
+    private class OnCleanupButtonClickedListener implements View.OnClickListener {
+        Obstacle mRegisteredObstacle;
+
+        public OnCleanupButtonClickedListener(Obstacle registeredObstacle) {
+            mRegisteredObstacle = registeredObstacle;
+        }
+
+        public void onClick(View v) {
+            // Find obstacle in original dataset.
+            Obstacle original = null;
+            for (Obstacle o: mOriginalObstacles) {
+                if (o.getObstacleId() == mRegisteredObstacle.getObstacleId()) {
+                    original = o;
+                    break;
+                }
+            }
+
+            for (OnCleanupRequestListener l : mCleanupListeners) {
+                l.onCleanupRequested(original);
+            }
+        }
+    }
+
+    public interface OnCleanupRequestListener {
+        void onCleanupRequested(Obstacle obstacle);
     }
 }

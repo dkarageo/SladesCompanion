@@ -64,6 +64,7 @@
     <string name="obstacles_items_firstly_spotted_date_hint">Εντοπίστηκε αρχικά:</string>
     <string name="obstacles_items_lastly_spotted_date_hint">Εντοπίστηκε τελευταία:</string>
     <string name="obstacles_search_bar_hint">Αναζήτηση εμποδίων</string>
+    <string name="obstacles_item_cleanup_button_text">Απομακρύνθηκε</string>
 
     <!-- About Screen Strings -->
     <string name="about_logo_description">Εικονίδιο εφαρμογής</string>

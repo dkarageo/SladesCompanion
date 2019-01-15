@@ -63,6 +63,7 @@
     <string name="obstacles_items_firstly_spotted_date_hint">Firstly Spotted:</string>
     <string name="obstacles_items_lastly_spotted_date_hint">Lastly Spotted:</string>
     <string name="obstacles_search_bar_hint">Search obstacle</string>
+    <string name="obstacles_item_cleanup_button_text">Cleared</string>
 
     <!-- About Screen Strings -->
     <string name="about_logo_description">Application logo</string>
