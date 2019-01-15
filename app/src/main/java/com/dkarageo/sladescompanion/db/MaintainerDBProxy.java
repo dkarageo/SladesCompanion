@@ -100,6 +100,27 @@ public class MaintainerDBProxy {
         return units;
     }
 
+    public boolean updateRoadsideUnitBrokenState(RoadsideUnit ru, boolean newState) {
+        if (!isConnectionValid()) return false;
+
+        String query = String.format("UPDATE %s.roadsidesensor SET isFunctioningProperly = ? WHERE sensorId = ?;", DBNAME);
+
+        try {
+            PreparedStatement ps = mConn.prepareStatement(query);
+
+            ps.setBoolean(1, newState);
+            ps.setLong(2, ru.getSensorId());
+
+            ps.executeUpdate();
+            ps.close();
+        } catch (SQLException ex) {
+            Log.e(TAG_SQL_ERROR, Log.getStackTraceString(ex));
+            return false;
+        }
+
+        return true;
+    }
+
     public List<Obstacle> getObstacles(boolean filterByRequiringService) {
 
         ArrayList<Obstacle> obstacles = new ArrayList<>();

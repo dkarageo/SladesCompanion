@@ -19,7 +19,9 @@ import java.util.List;
 import java.util.concurrent.Executors;
 
 
-public class RoadsideUnitsPage extends Fragment {
+public class RoadsideUnitsPage
+        extends Fragment
+        implements RoadsideUnitsRecyclerAdapter.OnBrokenStateUpdateRequestListener {
 
     RecyclerView                 mRecyclerView;
     RoadsideUnitsRecyclerAdapter mAdapter;
@@ -61,6 +63,24 @@ public class RoadsideUnitsPage extends Fragment {
         return rootView;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        mAdapter.registerOnBrokenStateUpdateRequestListener(this);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        mAdapter.unregisterOnBrokenStateUpdateRequestListener(this);
+    }
+
+    @Override
+    public void onBrokenStateUpdateRequested(RoadsideUnit unitToUpdate, boolean newState) {
+        new BrokenStateUpdater().executeOnExecutor(Executors.newFixedThreadPool(16),
+                                                   unitToUpdate, newState);
+    }
+
     class RoadsideUnitsFetcher extends AsyncTask<String, Void, List<RoadsideUnit>> {
         @Override
         protected List<RoadsideUnit> doInBackground(String... params) {
@@ -89,6 +109,23 @@ public class RoadsideUnitsPage extends Fragment {
         public boolean onQueryTextChange(String newText) {
             mAdapter.getFilter().filter(newText);
             return false;
+        }
+    }
+
+    private class BrokenStateUpdater extends AsyncTask<Object, Void, Void> {
+        @Override
+        protected Void doInBackground(Object... params) {
+            RoadsideUnit unitToUpdate = (RoadsideUnit) params[0];
+            boolean newState = (Boolean) params[1];
+            boolean rc = MaintainerDBProxy.getMaintainerDBProxy().updateRoadsideUnitBrokenState(
+                    unitToUpdate, newState);
+            if (rc) unitToUpdate.setIsFunctioningProperly(newState);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void args) {
+            mAdapter.updateDataset(mRoadsideUnits);
         }
     }
 }

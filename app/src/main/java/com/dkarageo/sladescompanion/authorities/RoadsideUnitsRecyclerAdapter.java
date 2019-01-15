@@ -1,16 +1,20 @@
 package com.dkarageo.sladescompanion.authorities;
 
+import android.os.AsyncTask;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
 
+import com.dkarageo.sladescompanion.App;
 import com.dkarageo.sladescompanion.R;
+import com.dkarageo.sladescompanion.db.MaintainerDBProxy;
 import com.dkarageo.sladescompanion.utils.TextUtils;
 
 import java.text.SimpleDateFormat;
@@ -28,6 +32,9 @@ public class RoadsideUnitsRecyclerAdapter
     private RoadsideUnitFilter mFilter;
     private CharSequence       mActiveFilter;
 
+    private List<OnBrokenStateUpdateRequestListener> mBrokenStateUpdateListeners;
+
+
     public static class RUViewHolder extends RecyclerView.ViewHolder {
         public CardView mItem;
         public TextView mItemType;
@@ -35,6 +42,7 @@ public class RoadsideUnitsRecyclerAdapter
         public TextView mItemOperator;
         public TextView mItemManufacturer;
         public TextView mItemLastServiceDate;
+        public Button   mBrokenStateSwitch;
 
         public RUViewHolder(View v) {
             super(v);
@@ -44,14 +52,16 @@ public class RoadsideUnitsRecyclerAdapter
             mItemOperator        = v.findViewById(R.id.roadside_units_item_operator);
             mItemManufacturer    = v.findViewById(R.id.roadside_units_item_manufacturer);
             mItemLastServiceDate = v.findViewById(R.id.roadside_units_item_last_service);
+            mBrokenStateSwitch   = v.findViewById(R.id.roadside_units_item_broken_state_switch);
         }
     }
 
     public RoadsideUnitsRecyclerAdapter(List<RoadsideUnit> roadsideUnits) {
-        mOriginalRoadsideUnits = roadsideUnits;
-        mUnitsToDisplay        = roadsideUnits;
-        mFilter                = new RoadsideUnitFilter();
-        mActiveFilter          = null;
+        mOriginalRoadsideUnits      = roadsideUnits;
+        mUnitsToDisplay             = roadsideUnits;
+        mFilter                     = new RoadsideUnitFilter();
+        mActiveFilter               = null;
+        mBrokenStateUpdateListeners = new ArrayList<>();
     }
 
     @Override
@@ -75,13 +85,32 @@ public class RoadsideUnitsRecyclerAdapter
         holder.mItemLastServiceDate.setText(
                 new SimpleDateFormat("dd-MM-yyyy").format(curUnit.getLastServiceDate()));
 
+        holder.mBrokenStateSwitch.setOnClickListener(new OnBrokenStateChangeRequestListener(curUnit));
+
         // Color the background of the card, when a roadside unit is not functioning properly.
         if (!curUnit.getIsFunctioningProperly()) {
             holder.mItem.setCardBackgroundColor(
                     ContextCompat.getColor(holder.mItem.getContext(), R.color.colorError));
+            holder.mBrokenStateSwitch.setText(
+                    App.getContext().getString(R.string.roadside_units_item_fix_button_text));
+            holder.mBrokenStateSwitch.setBackground(
+                    ContextCompat.getDrawable(
+                            holder.mBrokenStateSwitch.getContext(),
+                            R.drawable.roadside_units_item_broken_state_switch_broken
+                    )
+            );
         } else {
             holder.mItem.setCardBackgroundColor(
                     ContextCompat.getColor(holder.mItem.getContext(), R.color.white));
+
+            holder.mBrokenStateSwitch.setText(
+                    App.getContext().getString(R.string.roadside_units_item_break_button_text));
+            holder.mBrokenStateSwitch.setBackground(
+                    ContextCompat.getDrawable(
+                            holder.mBrokenStateSwitch.getContext(),
+                            R.drawable.roadside_units_item_broken_state_switch_good
+                    )
+            );
         }
     }
 
@@ -90,14 +119,21 @@ public class RoadsideUnitsRecyclerAdapter
         return mUnitsToDisplay.size();
     }
 
+    @Override
+    public Filter getFilter() { return mFilter; }
+
     public void updateDataset(List<RoadsideUnit> roadsideUnits) {
         mOriginalRoadsideUnits = roadsideUnits;
         mFilter.filter(mActiveFilter);
     }
 
-    @Override
-    public Filter getFilter() { return mFilter; }
+    public void registerOnBrokenStateUpdateRequestListener(OnBrokenStateUpdateRequestListener l) {
+        mBrokenStateUpdateListeners.add(l);
+    }
 
+    public void unregisterOnBrokenStateUpdateRequestListener(OnBrokenStateUpdateRequestListener l) {
+        mBrokenStateUpdateListeners.remove(l);
+    }
 
     private class RoadsideUnitFilter extends Filter {
 
@@ -137,5 +173,34 @@ public class RoadsideUnitsRecyclerAdapter
             mUnitsToDisplay = (List<RoadsideUnit>) results.values;
             notifyDataSetChanged();
         }
+    }
+
+    private class OnBrokenStateChangeRequestListener implements View.OnClickListener {
+        RoadsideUnit mRegisteredUnit;
+
+        public OnBrokenStateChangeRequestListener(RoadsideUnit registeredUnit) {
+            mRegisteredUnit = registeredUnit;
+        }
+
+        public void onClick(View v) {
+            boolean newState = !mRegisteredUnit.getIsFunctioningProperly();
+
+            // Find unit in original dataset.
+            RoadsideUnit original = null;
+            for (RoadsideUnit ru : mOriginalRoadsideUnits) {
+                if (ru.getSensorId() == mRegisteredUnit.getSensorId()) {
+                    original = ru;
+                    break;
+                }
+            }
+
+            for (OnBrokenStateUpdateRequestListener l : mBrokenStateUpdateListeners) {
+                l.onBrokenStateUpdateRequested(original, newState);
+            }
+        }
+    }
+
+    public interface OnBrokenStateUpdateRequestListener {
+        void onBrokenStateUpdateRequested(RoadsideUnit unitToUpdate, boolean newState);
     }
 }
