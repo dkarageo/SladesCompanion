@@ -72,6 +72,8 @@
     <string name="about_creator">
         Αναπτύχθηκε από τον Δημήτριο Καραγεωργίου
         \n\-\- karageods@auth.gr \-\-
+        \n\nΜε τη συνδρομή των
+        \nΑναστασία Κατράνα και Λευτέρη Κιλάρογλου
     </string>
     <string name="about_more">
         Στα πλαίσια του μαθήματος \"Βάσεις Δεδομένων\"
@@ -80,5 +82,6 @@
         \nhttps://github.com/dkarageo/SladesCompanion
         \n\nΥπό την άδεια GNU GPL v3.0
     </string>
+    <string name="about_version_hint">Έκδοση: </string>
 
 </resources>

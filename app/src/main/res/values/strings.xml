@@ -71,6 +71,7 @@
     <string name="about_creator">
         Created by Dimitrios Karageorgiou
         \n\-\- karageods@auth.gr \-\-
+        \n\n Assisted by Anastasia Katrana and Lefteris Kilaroglou
     </string>
     <string name="about_more">
         During course \"Database Systems\"
@@ -80,6 +81,8 @@
         \nhttps://github.com/dkarageo/SladesCompanion
         \n\nLicensed under GNU GPL v3.0 license.
     </string>
+    <string name="about_version_hint">Version: </string>
+    <string name="about_version">0.1.0</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
