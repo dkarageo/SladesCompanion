@@ -92,9 +92,11 @@ public class ObstaclesPage
 
         @Override
         protected void onPostExecute(List<Obstacle> obstacles) {
-            mObstacles.clear();
-            mObstacles.addAll(obstacles);
-            mAdapter.updateDataset(mObstacles);
+            if (obstacles != null) {
+                mObstacles.clear();
+                mObstacles.addAll(obstacles);
+                mAdapter.updateDataset(mObstacles);
+            }
         }
     }
 

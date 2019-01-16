@@ -90,9 +90,11 @@ public class RoadsideUnitsPage
 
         @Override
         protected void onPostExecute(List<RoadsideUnit> units) {
-            mRoadsideUnits.clear();
-            mRoadsideUnits.addAll(units);
-            mAdapter.updateDataset(mRoadsideUnits);
+            if (units != null) {
+                mRoadsideUnits.clear();
+                mRoadsideUnits.addAll(units);
+                mAdapter.updateDataset(mRoadsideUnits);
+            }
         }
     }
 
