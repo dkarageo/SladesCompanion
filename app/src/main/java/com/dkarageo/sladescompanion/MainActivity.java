@@ -90,9 +90,9 @@ public class MainActivity extends AppCompatActivity {
             ft.add(R.id.mainActivity_contentWrapper, vehiclesScreen);
             mainScreens.put("vehicles_screen", vehiclesScreen);
             ft.commit();
-
-            mSimulationsManager = SimulationsManager.getSimulationsManager();
         }
+
+        mSimulationsManager = SimulationsManager.getSimulationsManager();
 
         navBar = findViewById(R.id.navbar);
         if (navBar == null) throw new RuntimeException("Failed to acquire bottom navigation bar.");
