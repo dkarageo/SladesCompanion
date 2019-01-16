@@ -1,6 +1,7 @@
 package com.dkarageo.sladescompanion;
 
 import com.dkarageo.sladescompanion.authorities.AuthoritiesFragment;
+import com.dkarageo.sladescompanion.preferences.PreferencesActivity;
 import com.dkarageo.sladescompanion.vehicles.VehiclesFragment;
 import com.dkarageo.sladescompanion.vehicles.simulator.SimulationsManager;
 
@@ -154,6 +155,9 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.action_bar_about:
                 startActivity(new Intent(this, AboutActivity.class));
+                return true;
+            case R.id.action_bar_preferences:
+                startActivity(new Intent(this, PreferencesActivity.class));
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

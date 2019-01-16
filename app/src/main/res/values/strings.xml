@@ -7,6 +7,7 @@
 
     <!-- Action Bar Menu -->
     <string name="action_bar_about_title">About</string>
+    <string name="action_bar_preferences_title">Settings</string>
 
     <!-- Vehicles Tabs Titles -->
     <string name="vehicles_tab_summary_title">Summary</string>
@@ -64,6 +65,14 @@
     <string name="obstacles_items_lastly_spotted_date_hint">Lastly Spotted:</string>
     <string name="obstacles_search_bar_hint">Search obstacle</string>
     <string name="obstacles_item_cleanup_button_text">Cleared</string>
+
+    <!-- Preferences Screen Strings -->
+    <string name="preferences_db_category_title">Database Preferences</string>
+    <string name="preference_db_hostname_title">Hostname</string>
+    <string name="preference_db_port_title">Port</string>
+    <string name="preference_db_username_title">User</string>
+    <string name="preference_db_password_title">Password</string>
+    <string name="preference_db_dbname_title">Database</string>
 
     <!-- About Screen Strings -->
     <string name="about_logo_description">Application logo</string>

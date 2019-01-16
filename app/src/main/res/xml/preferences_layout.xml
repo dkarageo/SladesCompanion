@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.preference.PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory
+        android:key="preferences_db_category"
+        android:title="@string/preferences_db_category_title" >
+
+        <EditTextPreference
+            android:key="preferences_db_hostname"
+            android:title="@string/preference_db_hostname_title"
+            app:useSimpleSummaryProvider="true" />
+
+        <EditTextPreference
+            android:key="preference_db_port"
+            android:title="@string/preference_db_port_title"
+            app:useSimpleSummaryProvider="true" />
+
+        <EditTextPreference
+            android:key="preference_db_dbname"
+            android:title="@string/preference_db_dbname_title"
+            app:useSimpleSummaryProvider="true" />
+
+        <EditTextPreference
+            android:key="preference_db_username"
+            android:title="@string/preference_db_username_title"
+            app:useSimpleSummaryProvider="true" />
+
+        <EditTextPreference
+            android:key="preference_db_username"
+            android:title="@string/preference_db_password_title"
+            app:useSimpleSummaryProvider="true" />
+
+    </PreferenceCategory>
+
+</androidx.preference.PreferenceScreen>
