@@ -8,7 +8,7 @@
         android:title="@string/preferences_db_category_title" >
 
         <EditTextPreference
-            android:key="preferences_db_hostname"
+            android:key="preference_db_hostname"
             android:title="@string/preference_db_hostname_title"
             app:useSimpleSummaryProvider="true" />
 
@@ -28,7 +28,7 @@
             app:useSimpleSummaryProvider="true" />
 
         <EditTextPreference
-            android:key="preference_db_username"
+            android:key="preference_db_password"
             android:title="@string/preference_db_password_title"
             app:useSimpleSummaryProvider="true" />
 
