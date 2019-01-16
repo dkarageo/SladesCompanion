@@ -8,7 +8,7 @@
     android:orientation="vertical"
     tools:context=".vehicles.VehiclesSummaryPage" >
 
-    <android.support.constraint.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="8dp">
@@ -45,7 +45,7 @@
             app:layout_constraintTop_toBottomOf="@id/vehicles_summary_logo_icon"
             android:layout_marginTop="16dp" />
 
-        <android.support.v7.widget.GridLayout
+        <androidx.gridlayout.widget.GridLayout
             android:id="@+id/vehicles_summary_general_info_table"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -176,6 +176,6 @@
                 android:textColor="@color/red"
                 android:textStyle="bold" />
 
-        </android.support.v7.widget.GridLayout>
-    </android.support.constraint.ConstraintLayout>
+        </androidx.gridlayout.widget.GridLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

@@ -3,18 +3,17 @@ package com.dkarageo.sladescompanion.vehicles;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.support.v7.widget.GridLayout;
+import androidx.gridlayout.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.dkarageo.sladescompanion.App;
 import com.dkarageo.sladescompanion.R;
-import com.dkarageo.sladescompanion.authorities.Obstacle;
 import com.dkarageo.sladescompanion.vehicles.simulator.Simulation;
 import com.dkarageo.sladescompanion.vehicles.simulator.SimulationsManager;
 

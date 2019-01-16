@@ -11,7 +11,7 @@
     android:paddingRight="8dp"
     android:orientation="vertical">
 
-    <android.support.v7.widget.SearchView
+    <androidx.appcompat.widget.SearchView
         android:id="@+id/roadside_units_search_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -19,7 +19,7 @@
         app:iconifiedByDefault="false"
         app:queryHint="@string/roadside_units_search_bar_hint"/>
 
-    <android.support.v7.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/roadside_units_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
