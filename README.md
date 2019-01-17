@@ -1,4 +1,5 @@
 # **Slades Companion**
+![Slades Logo](https://github.com/dkarageo/SladesCompanion/blob/master/app/src/main/res/mipmap-xxxhdpi/ic_launcher_slades.png)
 
 ## Demo application for showcasing *Slades* system.
 
@@ -9,10 +10,12 @@ during the course *Database Systems*,\
 
 **Slades** (System for Local Area Data Exchange for Self-Driving Cars) is an educational project, aiming to present a concept system for Vehicle-To-Everything (V2X) communications based on a virtualized service of a 5G network.
 
-
 ### Where to download *Slades Companion*:
 
-Under `release_builds` folder, one can found the most recent builds of the project.
+[![Gougle Play Logo](https://play.google.com/intl/en_us/badges/images/badge_new.png)](https://play.google.com/store/apps/details?id=com.dkarageo.sladescompanion) \
+**Slades Companion is available to Play Store. [Download it here!](https://play.google.com/store/apps/details?id=com.dkarageo.sladescompanion)**
+
+Also, under `release_builds` folder, one can found the most recent builds of the project, in the form of signed APKs.
 
 ### Licensing:
 
