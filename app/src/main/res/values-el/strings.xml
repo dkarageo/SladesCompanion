@@ -10,6 +10,17 @@
     <string name="action_bar_about_title">Σχετικά</string>
     <string name="action_bar_preferences_title">Ρυθμίσεις</string>
 
+    <!-- Main Activity strings -->
+    <string name="no_connectivity_dialog_positive_button_text">Ρυθμίσεις</string>
+    <string name="no_connectivity_dialog_negative_button_text">Έξοδος</string>
+    <string name="no_connectivity_dialog_message">
+        Δεν είναι δυνατή η σύνδεση με τη βάση δεδομένων. Παρακαλώ ελέγξτε τις ρυθμίσεις σας.
+    </string>
+    <string name="no_connectivity_dialog_welcome_message">
+        Παρακαλώ ρυθμίστε τη βάση δεδομένων για να συνεχίσετε.
+    </string>
+    <string name="no_connectivity_dialog_welcome_title">Καλωσορίσατε στο Slades</string>
+
     <!-- Vehicles Tabs Titles -->
     <string name="vehicles_tab_summary_title">Σύνοψη</string>
     <string name="vehicles_tab_vehicle_detail_title">Όχημα</string>

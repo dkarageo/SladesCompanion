@@ -9,6 +9,17 @@
     <string name="action_bar_about_title">About</string>
     <string name="action_bar_preferences_title">Settings</string>
 
+    <!-- Main Activity strings -->
+    <string name="no_connectivity_dialog_positive_button_text">Open Settings</string>
+    <string name="no_connectivity_dialog_negative_button_text">Quit</string>
+    <string name="no_connectivity_dialog_message">
+        No connectivity to database found. Please check your settings.
+    </string>
+    <string name="no_connectivity_dialog_welcome_message">
+        Please configure the database before proceeding.
+    </string>
+    <string name="no_connectivity_dialog_welcome_title">Welcome to Slades</string>
+
     <!-- Vehicles Tabs Titles -->
     <string name="vehicles_tab_summary_title">Summary</string>
     <string name="vehicles_tab_vehicle_detail_title">Vehicle</string>

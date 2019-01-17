@@ -523,7 +523,7 @@ public class MaintainerDBProxy {
         return drivingSystemId;
     }
 
-    private synchronized boolean isConnectionValid() {
+    public synchronized boolean isConnectionValid() {
         if (mConn == null) {
             try {
                 mConn = openConnection();

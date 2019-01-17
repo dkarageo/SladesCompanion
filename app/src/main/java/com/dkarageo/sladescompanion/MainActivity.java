@@ -1,26 +1,34 @@
 package com.dkarageo.sladescompanion;
 
 import com.dkarageo.sladescompanion.authorities.AuthoritiesFragment;
+import com.dkarageo.sladescompanion.db.MaintainerDBProxy;
 import com.dkarageo.sladescompanion.preferences.PreferencesActivity;
 import com.dkarageo.sladescompanion.vehicles.VehiclesFragment;
 import com.dkarageo.sladescompanion.vehicles.simulator.SimulationsManager;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.Executors;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -36,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
     // An indicator set to true when a fragment change is caused by a press to back button (and
     // e.g. not from a click to navigation bar buttons).
     private boolean switchCausedByBackButton = false;
+
 
     // Listener for clicks on bottom navigation bar items.
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -106,6 +115,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        if (!isFirstRun()) {
+            new RemoteConnectionChecker().
+                    executeOnExecutor(Executors.newFixedThreadPool(16));
+        }
+    }
+
+    @Override
     public void onBackPressed() {
 
         FragmentManager fm = getSupportFragmentManager();
@@ -161,6 +179,38 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void displayNoConnectivityDialog(boolean firstRun) {
+        NoConnectivityDialogFragment
+                .newInstance(firstRun)
+                .show(getSupportFragmentManager(), "no_connectivity_dialog");
+    }
+
+    private boolean isFirstRun() {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean firstRun = sp.getBoolean("com.dkarageo.sladescompanion.first_run", true);
+
+        if (firstRun) {
+            displayNoConnectivityDialog(true);
+            sp.edit().putBoolean("com.dkarageo.sladescompanion.first_run", false).apply();
+        }
+
+        return firstRun;
+    }
+
+
+    private class RemoteConnectionChecker extends AsyncTask<Void, Void, Boolean> {
+
+        @Override
+        protected Boolean doInBackground(Void... params) {
+            return MaintainerDBProxy.getMaintainerDBProxy().isConnectionValid();
+        }
+
+        @Override
+        protected void onPostExecute(Boolean isConnectionValid) {
+            if (!isConnectionValid) displayNoConnectivityDialog(false);
         }
     }
 }
