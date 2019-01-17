@@ -3,10 +3,10 @@ package com.dkarageo.sladescompanion.authorities;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SearchView;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.widget.SearchView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -90,9 +90,11 @@ public class RoadsideUnitsPage
 
         @Override
         protected void onPostExecute(List<RoadsideUnit> units) {
-            mRoadsideUnits.clear();
-            mRoadsideUnits.addAll(units);
-            mAdapter.updateDataset(mRoadsideUnits);
+            if (units != null) {
+                mRoadsideUnits.clear();
+                mRoadsideUnits.addAll(units);
+                mAdapter.updateDataset(mRoadsideUnits);
+            }
         }
     }
 

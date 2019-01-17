@@ -8,6 +8,18 @@
 
     <!-- Action Bar Menu -->
     <string name="action_bar_about_title">Σχετικά</string>
+    <string name="action_bar_preferences_title">Ρυθμίσεις</string>
+
+    <!-- Main Activity strings -->
+    <string name="no_connectivity_dialog_positive_button_text">Ρυθμίσεις</string>
+    <string name="no_connectivity_dialog_negative_button_text">Έξοδος</string>
+    <string name="no_connectivity_dialog_message">
+        Δεν είναι δυνατή η σύνδεση με τη βάση δεδομένων. Παρακαλώ ελέγξτε τις ρυθμίσεις σας.
+    </string>
+    <string name="no_connectivity_dialog_welcome_message">
+        Παρακαλώ ρυθμίστε τη βάση δεδομένων για να συνεχίσετε.
+    </string>
+    <string name="no_connectivity_dialog_welcome_title">Καλωσορίσατε στο Slades</string>
 
     <!-- Vehicles Tabs Titles -->
     <string name="vehicles_tab_summary_title">Σύνοψη</string>
@@ -65,6 +77,14 @@
     <string name="obstacles_items_lastly_spotted_date_hint">Εντοπίστηκε τελευταία:</string>
     <string name="obstacles_search_bar_hint">Αναζήτηση εμποδίων</string>
     <string name="obstacles_item_cleanup_button_text">Απομακρύνθηκε</string>
+
+    <!-- Preferences Screen Strings -->
+    <string name="preferences_db_category_title">Ρυθμίσεις Βάσης Δεδομένων</string>
+    <string name="preference_db_hostname_title">Hostname</string>
+    <string name="preference_db_port_title">Port</string>
+    <string name="preference_db_username_title">User</string>
+    <string name="preference_db_password_title">Password</string>
+    <string name="preference_db_dbname_title">Database</string>
 
     <!-- About Screen Strings -->
     <string name="about_logo_description">Εικονίδιο εφαρμογής</string>

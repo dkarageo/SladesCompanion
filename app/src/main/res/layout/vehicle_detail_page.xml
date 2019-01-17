@@ -8,7 +8,7 @@
     android:orientation="vertical"
     tools:context=".vehicles.VehicleDetailPage" >
 
-    <android.support.constraint.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="8dp">
@@ -66,7 +66,7 @@
             app:layout_constraintTop_toBottomOf="@id/vehicles_vehicle_image"
             android:layout_marginTop="16dp" />
 
-        <android.support.v7.widget.GridLayout
+        <androidx.gridlayout.widget.GridLayout
             android:id="@+id/vehicles_vehicle_parameters_table"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -162,7 +162,7 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/vehicles_vehicle_autonomylevel_hint" />
 
-        </android.support.v7.widget.GridLayout>
+        </androidx.gridlayout.widget.GridLayout>
 
         <View
             android:id="@+id/vehicles_vehicle_body_siminfo_divider"
@@ -182,7 +182,7 @@
             app:layout_constraintTop_toTopOf="@id/vehicles_vehicle_body_siminfo_divider"
             android:layout_marginTop="16dp" />
 
-        <android.support.v7.widget.GridLayout
+        <androidx.gridlayout.widget.GridLayout
             android:id="@+id/vehicles_vehicle_sim_parameters_table"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -237,7 +237,7 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/vehicles_vehicle_sim_spotted_obstacles_hint" />
 
-        </android.support.v7.widget.GridLayout>
+        </androidx.gridlayout.widget.GridLayout>
 
-    </android.support.constraint.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

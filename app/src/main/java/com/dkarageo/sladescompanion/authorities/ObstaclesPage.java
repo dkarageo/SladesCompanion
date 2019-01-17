@@ -3,10 +3,10 @@ package com.dkarageo.sladescompanion.authorities;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SearchView;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.widget.SearchView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -92,9 +92,11 @@ public class ObstaclesPage
 
         @Override
         protected void onPostExecute(List<Obstacle> obstacles) {
-            mObstacles.clear();
-            mObstacles.addAll(obstacles);
-            mAdapter.updateDataset(mObstacles);
+            if (obstacles != null) {
+                mObstacles.clear();
+                mObstacles.addAll(obstacles);
+                mAdapter.updateDataset(mObstacles);
+            }
         }
     }
 

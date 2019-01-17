@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.dkarageo.sladescompanion.authorities.Obstacle;
 import com.dkarageo.sladescompanion.authorities.RoadsideUnit;
+import com.dkarageo.sladescompanion.preferences.PreferencesController;
 import com.dkarageo.sladescompanion.units.Location;
 import com.dkarageo.sladescompanion.vehicles.Vehicle;
 
@@ -19,18 +20,13 @@ import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Properties;
+import java.util.prefs.Preferences;
 
 
 public class MaintainerDBProxy {
 
     private static final String TAG_SQL_ERROR    = "SQLError";
     private static final String TAG_DRIVER_ERROR = "SQLDriverError";
-
-    private static final String USERNAME = "sladesdb";
-    private static final String PASSWORD = "Em6B14Negt_!";
-    private static final String DBHOST   = "den1.mysql1.gear.host";
-    private static final int PORT        = 3306;
-    private static final String DBNAME   = "sladesdb";
 
     private static MaintainerDBProxy dbProxy = null;
 
@@ -53,12 +49,20 @@ public class MaintainerDBProxy {
         }
 
         Connection conn = null;
-        Properties connProps = new Properties();
-        connProps.put("user", USERNAME);
-        connProps.put("password", PASSWORD);
+
+        String dbHostname = PreferencesController.getDBHostname();
+        int dbPort        = PreferencesController.getDBPort();
+        String dbName     = PreferencesController.getDBName();
+        String dbUsername = PreferencesController.getDBUsername();
+        String dbPassword = PreferencesController.getDBPassword();
 
         conn = DriverManager.getConnection(
-                "jdbc:mysql://" + DBHOST + "/" + DBNAME, USERNAME, PASSWORD);
+                "jdbc:mysql://" +
+                        dbHostname +
+                        (dbPort > 0 ? String.format(":%d", dbPort) : "") +
+                        "/" +
+                        dbName,
+                dbUsername, dbPassword);
 
         return conn;
     }
@@ -70,7 +74,8 @@ public class MaintainerDBProxy {
 
         ArrayList<RoadsideUnit> units = new ArrayList<>();
 
-        String query  = "SELECT * FROM sladesdb.roadsidesensor ";
+        String query  = String.format("SELECT * FROM %s.roadsidesensor ",
+                                      PreferencesController.getDBName());
         String orderBy = "ORDER BY isFunctioningProperly ASC";
         if (sortByIsFunctioningProperly) query = query + orderBy;
 
@@ -103,7 +108,10 @@ public class MaintainerDBProxy {
     public boolean updateRoadsideUnitBrokenState(RoadsideUnit ru, boolean newState) {
         if (!isConnectionValid()) return false;
 
-        String query = String.format("UPDATE %s.roadsidesensor SET isFunctioningProperly = ? WHERE sensorId = ?;", DBNAME);
+        String query = String.format(
+                "UPDATE %s.roadsidesensor SET isFunctioningProperly = ? WHERE sensorId = ?;",
+                PreferencesController.getDBName()
+        );
 
         try {
             PreparedStatement ps = mConn.prepareStatement(query);
@@ -138,7 +146,8 @@ public class MaintainerDBProxy {
 
         Statement s = null;
         String where = "WHERE requiresService = 1";
-        String query = String.format("SELECT * FROM %s.obstacle %s;", DBNAME,
+        String query = String.format("SELECT * FROM %s.obstacle %s;",
+                                     PreferencesController.getDBName(),
                                      filterByRequiringService ? where : "");
 
         try {
@@ -168,7 +177,10 @@ public class MaintainerDBProxy {
     public boolean updateObstacleRequiresMaintanceState(Obstacle o, boolean newState) {
         if (!isConnectionValid()) return false;
 
-        String query = String.format("UPDATE %s.obstacle SET requiresService = ? WHERE obstacleId = ?;", DBNAME);
+        String query = String.format(
+                "UPDATE %s.obstacle SET requiresService = ? WHERE obstacleId = ?;",
+                PreferencesController.getDBName()
+        );
 
         try {
             PreparedStatement ps = mConn.prepareStatement(query);
@@ -189,7 +201,10 @@ public class MaintainerDBProxy {
     public long putObstacle(Obstacle obstacle) {
         if (!isConnectionValid()) return -2;
 
-        final String query = String.format("INSERT INTO %s.Obstacle (obstacleId, type, firstlySpottedOn, lastlySpottedOn, isAliveConfidence, requiresService) VALUES(?, ?, ?, ?, ?, ?)", DBNAME);
+        final String query = String.format(
+                "INSERT INTO %s.Obstacle (obstacleId, type, firstlySpottedOn, lastlySpottedOn, isAliveConfidence, requiresService) VALUES(?, ?, ?, ?, ?, ?)",
+                PreferencesController.getDBName()
+        );
 
         // Acquire GUID corresponding to current obstacle unit.
         long obstacleId = putUnit();
@@ -217,7 +232,8 @@ public class MaintainerDBProxy {
     public boolean deleteObstacle(Obstacle obstacle) {
         if (!isConnectionValid()) return false;
 
-        final String query = String.format("DELETE FROM %s.Obstacle WHERE obstacleId=?;", DBNAME);
+        final String query = String.format("DELETE FROM %s.Obstacle WHERE obstacleId=?;",
+                                           PreferencesController.getDBName());
 
         long obstacleId = obstacle.getObstacleId();
         if (!deleteAllLocations(obstacleId)) return false;
@@ -240,7 +256,9 @@ public class MaintainerDBProxy {
     public long putUnit() {
         if (!isConnectionValid()) return -1;
 
-        final String query = String.format("INSERT INTO %s.Unit (updateInterval, isStructured, isDynamic, providerConfidence, type) VALUES(?, ?, ?, ?, ?)", DBNAME);
+        final String query = String.format(
+                "INSERT INTO %s.Unit (updateInterval, isStructured, isDynamic, providerConfidence, type) VALUES(?, ?, ?, ?, ?)",
+                PreferencesController.getDBName());
         long unitId = -1;
 
         try {
@@ -268,7 +286,8 @@ public class MaintainerDBProxy {
     public boolean deleteUnit(long unitId) {
         if (!isConnectionValid()) return false;
 
-        final String query = String.format("DELETE FROM %s.unit WHERE unitId=?;", DBNAME);
+        final String query = String.format("DELETE FROM %s.unit WHERE unitId=?;",
+                                           PreferencesController.getDBName());
 
         try {
             PreparedStatement ps = mConn.prepareStatement(query);
@@ -285,7 +304,8 @@ public class MaintainerDBProxy {
     public boolean deleteVehicle(Vehicle v) {
         if (!isConnectionValid()) return false;
 
-        final String query = String.format("DELETE FROM %s.vehicle WHERE vehicleId=?;", DBNAME);
+        final String query = String.format("DELETE FROM %s.vehicle WHERE vehicleId=?;",
+                                           PreferencesController.getDBName());
 
         long vehicleId = v.getVehicleId();
         if (!deleteAllLocations(vehicleId)) return false;
@@ -308,7 +328,10 @@ public class MaintainerDBProxy {
     public int putLocation(long unitId, Location location) {
         if (!isConnectionValid()) return -1;
 
-        final String query = String.format("INSERT INTO %s.Location (unitId, timestamp, validFrom, validTo, longitude, latitude, altitude, confidence, providerId) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)", DBNAME);
+        final String query = String.format(
+                "INSERT INTO %s.Location (unitId, timestamp, validFrom, validTo, longitude, latitude, altitude, confidence, providerId) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                PreferencesController.getDBName()
+        );
         int locationId = -1;
 
         try {
@@ -342,7 +365,8 @@ public class MaintainerDBProxy {
     public boolean deleteAllLocations(long unitId) {
         if (!isConnectionValid()) return false;
 
-        final String query = String.format("DELETE FROM %s.location WHERE unitId=?;", DBNAME);
+        final String query = String.format("DELETE FROM %s.location WHERE unitId=?;",
+                                           PreferencesController.getDBName());
 
         try {
             PreparedStatement ps = mConn.prepareStatement(query);
@@ -359,7 +383,9 @@ public class MaintainerDBProxy {
     public long putVehicle(Vehicle v) {
         if (!isConnectionValid()) return -2;
 
-        final String query = String.format("INSERT INTO %s.Vehicle (vehicleId, licenseNo, manufacturer, model, engineSerialNo, lostTraction, autoDriveSysId) VALUES(?, ?, ?, ?, ?, ?, ?)", DBNAME);
+        final String query = String.format(
+                "INSERT INTO %s.Vehicle (vehicleId, licenseNo, manufacturer, model, engineSerialNo, lostTraction, autoDriveSysId) VALUES(?, ?, ?, ?, ?, ?, ?)",
+                PreferencesController.getDBName());
 
         // Acquire GUID corresponding to current vehicle unit.
         long vehicleId = putUnit();
@@ -400,7 +426,8 @@ public class MaintainerDBProxy {
     public int getVehiclesCount() {
         if (!isConnectionValid()) return -2;
 
-        final String query = String.format("SELECT COUNT(vehicleId) FROM %s.Vehicle;", DBNAME);
+        final String query = String.format("SELECT COUNT(vehicleId) FROM %s.Vehicle;",
+                                           PreferencesController.getDBName());
         int count = -1;
 
         try {
@@ -420,7 +447,8 @@ public class MaintainerDBProxy {
     public int getObstaclesCount() {
         if (!isConnectionValid()) return -2;
 
-        final String query = String.format("SELECT COUNT(obstacleId) FROM %s.Obstacle;", DBNAME);
+        final String query = String.format("SELECT COUNT(obstacleId) FROM %s.Obstacle;",
+                                           PreferencesController.getDBName());
         int count = -1;
 
         try {
@@ -441,7 +469,10 @@ public class MaintainerDBProxy {
                                      int version, int autonomyLevel) {
         if (!isConnectionValid()) return -1;
 
-        final String query = String.format("INSERT INTO %s.AutoDrivingSystem (manufacturer, version, autonomyLevel, name) VALUES(?, ?, ?, ?)", DBNAME);
+        final String query = String.format(
+                "INSERT INTO %s.AutoDrivingSystem (manufacturer, version, autonomyLevel, name) VALUES(?, ?, ?, ?)",
+                PreferencesController.getDBName()
+        );
         long drivingSystemId = -1;
 
         try {
@@ -467,7 +498,10 @@ public class MaintainerDBProxy {
     public long getAutoDrivingSystemId(String name, String manufacturer, int version) {
         if (!isConnectionValid()) return -2;
 
-        final String query = String.format("SELECT drivingSystemId FROM %s.AutoDrivingSystem WHERE manufacturer = ? AND version = ? AND name = ?", DBNAME);
+        final String query = String.format(
+                "SELECT drivingSystemId FROM %s.AutoDrivingSystem WHERE manufacturer = ? AND version = ? AND name = ?",
+                PreferencesController.getDBName()
+        );
         long drivingSystemId = -1;
 
         try {
@@ -489,7 +523,7 @@ public class MaintainerDBProxy {
         return drivingSystemId;
     }
 
-    private synchronized boolean isConnectionValid() {
+    public synchronized boolean isConnectionValid() {
         if (mConn == null) {
             try {
                 mConn = openConnection();
@@ -501,23 +535,4 @@ public class MaintainerDBProxy {
 
         return true;
     }
-
-//    private List<RoadsideUnit> testingRUs() {
-//        ArrayList<RoadsideUnit> units = new ArrayList<>();
-//
-//        for (int i = 0; i < 10; ++i) {
-//            RoadsideUnit u = new RoadsideUnit();
-//            u.setSensorId(i * 500 + i);
-//            u.setSensorType("Speed Camera");
-//            u.setOperator("Road Authorities");
-//            u.setLastServiceDate(GregorianCalendar.getInstance().getTime());
-//            u.setServiceInterval((long) 10000);
-//            u.setManufacturer("Siemens");
-//            u.setAccuracy((float) 0.99);
-//
-//            units.add(u);
-//        }
-//
-//        return units;
-//    }
 }

@@ -7,12 +7,12 @@
     android:layout_height="match_parent"
     tools:context=".vehicles.VehiclesFragment">
 
-    <android.support.v4.view.ViewPager
+    <androidx.viewpager.widget.ViewPager
         android:id="@+id/vehicles_viewpager"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <android.support.design.widget.TabLayout
+        <com.google.android.material.tabs.TabLayout
             android:id="@+id/vehicles_viewpager_tablayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -24,9 +24,9 @@
             app:tabMaxWidth="500dp"
             app:tabGravity="center"
             app:tabMode="scrollable" />
-    </android.support.v4.view.ViewPager>
+    </androidx.viewpager.widget.ViewPager>
 
-    <android.support.design.widget.FloatingActionButton
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/vehicles_fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
